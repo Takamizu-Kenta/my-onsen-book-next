@@ -6,7 +6,7 @@ services:
       context: ./
       dockerfile: Dockerfile
     volumes:
-      - ./my-onsen-book-next/:/usr/src/app
+      - ./:/usr/src/app
     command: 'yarn dev'
     ports:
       - "8000:3000"
