@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  my-onsen-book-next:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - ./my-onsen-book-next/:/usr/src/app
+    command: 'yarn dev'
+    ports:
+      - "8000:3000"
