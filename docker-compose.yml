@@ -2,6 +2,8 @@ version: '3.8'
 
 services:
   my-onsen-book-next:
+    image: my-onsen-book-next
+    container_name: my-onsen-book-next
     build:
       context: ./
       dockerfile: Dockerfile
@@ -10,3 +12,9 @@ services:
     command: 'yarn dev'
     ports:
       - "8000:3000"
+    networks:
+      - my_onsen_book_network
+
+networks:
+  my_onsen_book_network:
+    external: true
