@@ -8,7 +8,9 @@ services:
       context: ./
       dockerfile: Dockerfile
     volumes:
-      - ./:/usr/src/app
+      - .:/my-onsen-book-next
+    environment:
+      - WATCHPACK_POLLING=true
     command: 'yarn dev'
     ports:
       - "8000:3000"
