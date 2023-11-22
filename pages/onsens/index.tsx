@@ -18,7 +18,7 @@ const OnsensPage = () => {
 
   return (
     <div>
-      <h1>温泉一覧</h1>
+      <h1>温泉一覧ですぞよ</h1>
       <ul>
         {onsens.map(onsen => (
           <li key={onsen.id}>{onsen.name}<br></br>{onsen.description}</li>
