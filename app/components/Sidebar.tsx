@@ -15,23 +15,23 @@ const Sidebar = () => {
         <div>
           <p className="text-sm text-slate-50 font-semibold opacity-80 text-center">M E N U</p>
           <ul className="font-notojp text-white">
-            <li className="mt-8 text-xl flex justify-between items-center">
+            <li className="mt-10 text-xl flex justify-between items-center">
               <p className="pb-0.5 pr-5">トップページ</p>
               <Image src={sidebarIcon} alt="Right Arrow" width={9} height={9} />
             </li>
-            <li className="mt-8 text-xl flex justify-between items-center">
+            <li className="mt-10 text-xl flex justify-between items-center">
               <p className="pb-0.5 pr-5">MyOnsenBookとは</p>
               <Image src={sidebarIcon} alt="Right Arrow" width={9} height={9} />
             </li>
-            <li className="mt-8 text-xl flex justify-between items-center">
+            <li className="mt-10 text-xl flex justify-between items-center">
               <p className="pb-0.5 pr-5">場所から温泉を探す</p>
               <Image src={sidebarIcon} alt="Right Arrow" width={9} height={9} />
             </li>
-            <li className="mt-8 text-xl flex justify-between items-center">
+            <li className="mt-10 text-xl flex justify-between items-center">
               <p className="pb-0.5 pr-5">泉質から温泉を探す</p>
               <Image src={sidebarIcon} alt="Right Arrow" width={9} height={9} />
             </li>
-            <li className="mt-8 text-xl flex justify-between items-center">
+            <li className="mt-10 text-xl flex justify-between items-center">
               <p className="pb-0.5 pr-5"> 宿から温泉を探す</p>
               <Image src={sidebarIcon} alt="Right Arrow" width={9} height={9} />
             </li>
@@ -39,11 +39,11 @@ const Sidebar = () => {
           </ul>
         </div>
         <button
-          className="mt-40 btn btn-wide btn-outline text-white hover:bg-emerald-200 hover:text-black hover:border-emerald-200">
+          className="mt-40 btn btn-wide btn-outline text-white hover:bg-white hover:text-black hover:border-emerald-200">
           ゲストログイン
         </button>
         <button
-          className="mt-10 btn btn-wide btn-outline text-white hover:bg-emerald-200 hover:text-black hover:border-emerald-200">
+          className="mt-10 btn btn-wide btn-outline text-white hover:bg-white hover:text-black hover:border-emerald-200">
           お問い合わせ
         </button>
       </div>
