@@ -1,13 +1,9 @@
-// components/Sidebar.tsx
-import React, { ReactNode } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import sidebarIcon from './icons/arrow_right_white.png'
+import { NextPage } from 'next';
 
-interface SidebarProps {
-  children?: ReactNode;
-}
-
-const Sidebar: React.FC<SidebarProps> = ({ children }) => {
+const Sidebar = () => {
   return (
     <div className="bg-emerald-600 p-2 w-96">
       <div className="flex flex-col items-center">
