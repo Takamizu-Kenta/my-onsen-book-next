@@ -5,7 +5,7 @@ export default function HomePage() {
   // ここに必要なデータフェッチングやその他のロジックを記述
 
   return (
-    <div className="min-h-screen flex-col flex justify-center items-center">
+    <div className="min-h-screen flex-col flex justify-center items-center bg-white">
       <h1 className="text-4xl mb-5">Table</h1>
       <table className="border-collapse border border-slate-400">
         <thead>
