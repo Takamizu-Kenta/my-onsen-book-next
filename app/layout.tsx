@@ -1,10 +1,8 @@
 import './globals.css'
 import { notojp } from "./utiles/fonts";
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import Sidebar from './components/Sidebar'
 
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Create Next App',
