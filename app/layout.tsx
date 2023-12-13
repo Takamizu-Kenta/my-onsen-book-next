@@ -1,10 +1,8 @@
 import './globals.css'
-import { notojp } from "./utiles/fonts";
+import { notojp } from "./utils/fonts";
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import Sidebar from './components/Sidebar'
 
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -18,10 +16,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja-JP" className={`${notojp.variable}`}>
-      <div className="h-screen flex">
-        <Sidebar/>
-        <div className="w-screen">{children}</div>
-      </div>
+      <body>
+        <div className="h-screen w-screen flex">
+          <div className="sidebar"><Sidebar/></div>
+          <div className="flex-1">{children}</div>
+        </div>
+      </body>
     </html>
   )
 }

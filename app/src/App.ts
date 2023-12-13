@@ -11,4 +11,4 @@ export const useAxios = () => {
     });
 
     return axiosInstance;
-};
+}
