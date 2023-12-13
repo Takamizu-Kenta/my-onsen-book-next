@@ -1,11 +1,10 @@
 import React from 'react';
 import Image from 'next/image';
 import sidebarIcon from './icons/arrow_right_white.png'
-import { NextPage } from 'next';
 
 const Sidebar = () => {
   return (
-    <div className="bg-emerald-600 p-2 w-96">
+    <div className="bg-emerald-600 p-2 w-96 h-screen">
       <div className="flex flex-col items-center">
         <h2 className="font-notojp text-white text-4xl mt-6 mb-4">MyOnsenBook</h2>
         <div className="font-notojp flex text-white border-gray-200 mt-10 mb-20 text-xl">

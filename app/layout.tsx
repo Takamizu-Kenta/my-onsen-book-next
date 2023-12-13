@@ -1,5 +1,5 @@
 import './globals.css'
-import { notojp } from "./utiles/fonts";
+import { notojp } from "./utils/fonts";
 import type { Metadata } from 'next'
 import Sidebar from './components/Sidebar'
 
@@ -17,9 +17,9 @@ export default function RootLayout({
   return (
     <html lang="ja-JP" className={`${notojp.variable}`}>
       <body>
-        <div className="h-screen flex">
-          <Sidebar/>
-          <div className="w-screen">{children}</div>
+        <div className="h-screen w-screen flex">
+          <div className="sidebar"><Sidebar/></div>
+          <div className="flex-1">{children}</div>
         </div>
       </body>
     </html>
