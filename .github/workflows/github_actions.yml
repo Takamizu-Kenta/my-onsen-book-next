@@ -1,0 +1,36 @@
+name: Run lint
+
+on:
+  pull_request:
+
+jobs:
+  # eslint実行
+  lint:
+    runs-on: ubuntu-latest
+    env:
+      API_BASE_URL: "https://api.github.com"
+      COMMON_HEADER: "Accept: application/vnd.github.v3+json"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: run eslint with reviewdog
+        uses: reviewdog/action-eslint@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
+          eslint_flags: "app/"
+          filter_mode: diff_context
+          fail_on_error: true
+
+  assign:
+    runs-on: ubuntu-latest
+    steps:
+      # AssigneeはPRを作成した人を自動的に指定
+      - uses: technote-space/assign-author@v1
