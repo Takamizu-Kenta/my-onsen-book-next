@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import Link from 'next/link'
 import { Onsen } from '../src/types/onsen'
 import {Input} from "@nextui-org/react"
 import {Card, CardHeader, CardBody} from "@nextui-org/react"
@@ -66,9 +67,11 @@ const Onsens = () => {
           ))}
         </div>
         <div className="flex w-full justify-end">
-          <Button className="mt-5 w-40 mr-6" color="success" variant="bordered">
-            一覧を見る
-          </Button>
+          <Link href="/onsens/all">
+            <Button className="mt-5 w-40 mr-6" color="success" variant="bordered">
+              一覧を見る
+            </Button>
+          </Link>
         </div>
       </div>
 
