@@ -18,8 +18,8 @@ export default function RootLayout({
     <html lang="ja-JP" className={`${notojp.variable}`}>
       <body>
         <div className="h-screen w-screen flex">
-          <div className="sidebar"><Sidebar/></div>
-          <div className="flex-1">{children}</div>
+          <div className="w-96"><Sidebar/></div>
+          <div className="flex-1 overflow-auto bg-slate-100 h-screen">{children}</div>
         </div>
       </body>
     </html>
