@@ -1,7 +1,6 @@
 "use client"
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect, useState, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import axios from 'axios'
 import Link from 'next/link'
@@ -17,7 +16,7 @@ const OnsensShow = () => {
   const params = useParams()
   const id = params.id
 
-  const fetchOnsen = async () => {
+  const fetchOnsen = useCallback(async () => {
     try {
       const res = await axios.get<Onsen>(`http://localhost:3000/api/v1/onsens/${id}`)
 
@@ -25,7 +24,7 @@ const OnsensShow = () => {
     } catch (err) {
       console.log(err)
     }
-  }
+  }, [id])
 
   const fetchFacilities = async () => {
     try {
@@ -42,7 +41,7 @@ const OnsensShow = () => {
       fetchOnsen()
       fetchFacilities()
     }
-  }, [id])
+  }, [fetchOnsen])
 
   if (!onsen) {
     return <div>Loading...</div>;
@@ -120,7 +119,7 @@ const OnsensShow = () => {
         </h4>
         <div>
           {facilities.map((facility: any) => (
-            <div className='flex items-center border-b-2 border-gray-200 ml-3 h-56'>
+            <div key={facility.id} className='flex items-center border-b-2 border-gray-200 ml-3 h-56'>
               <div className='flex-1 w-1/3 m-2'>
                 <Image src='https://placehold.jp/1280x720.png' alt='Onsen Image' width={1280} height={720} />
               </div>
