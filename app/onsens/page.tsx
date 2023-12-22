@@ -61,7 +61,9 @@ const Onsens = () => {
               </CardHeader>
               <CardBody className="overflow-visible py-2">
                 <p className="text-default-500 text-sm overflow-hidden line-clamp-2">{onsen.description}</p>
-                <p className=" text-sm mt-6 text-right text-emerald-600">もっとみる→</p>
+                <Link href={`/onsens/${onsen.id}`}>
+                  <p className=" text-sm mt-6 text-right text-emerald-600">もっとみる→</p>
+                </Link>
               </CardBody>
             </Card>
           ))}
