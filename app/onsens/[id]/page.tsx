@@ -8,8 +8,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Onsen } from '../../src/types/onsen'
 import { Facility } from '../../src/types/facility'
-import {Input} from "@nextui-org/react"
-import {Card, CardHeader, CardBody} from "@nextui-org/react"
 import { Button } from "@nextui-org/react"
 
 const OnsensShow = () => {
@@ -17,7 +15,6 @@ const OnsensShow = () => {
   const [facilities, setFacilities] = useState<Facility[]>([])
 
   const params = useParams()
-  console.log(params)
   const id = params.id
 
   const fetchOnsen = async () => {
