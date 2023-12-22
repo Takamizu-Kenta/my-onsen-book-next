@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import Link from 'next/link'
 import { Onsen } from '../../src/types/onsen'
-import {Input} from "@nextui-org/react"
-import {Card, CardHeader, CardBody} from "@nextui-org/react"
+import { Input } from "@nextui-org/react"
+import { Card, CardHeader, CardBody } from "@nextui-org/react"
 import OnsenSelect from "../../components/selects/OnsenSelect"
 
 const Onsens = () => {
@@ -88,7 +89,9 @@ const Onsens = () => {
                 <small className="text-default-500">主な泉質</small>
                 <small className="text-default-500">{onsen.quality}</small>
                 <p className="text-default-500 text-sm overflow-hidden line-clamp-2">{onsen.description}</p>
-                <p className=" text-sm mt-6 mr-5 text-right text-emerald-600">もっとみる→</p>
+                <Link href={`/onsens/${onsen.id}`}>
+                  <p className=" text-sm mt-6 mr-5 text-right text-emerald-600">もっとみる→</p>
+                </Link>
               </CardBody>
             </Card>
           ))}
