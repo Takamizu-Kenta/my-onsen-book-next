@@ -41,7 +41,7 @@ const OnsensShow = () => {
       fetchOnsen()
       fetchFacilities()
     }
-  }, [fetchOnsen])
+  }, [fetchOnsen, id])
 
   if (!onsen) {
     return <div>Loading...</div>;
