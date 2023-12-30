@@ -2,14 +2,17 @@
 
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import Link from 'next/link'
 import { Onsen } from '../../src/types/onsen'
-import { Input } from "@nextui-org/react"
+import { Prefecture } from '../../src/types/prefecture'
+import { Modal, ModalContent, Button, Input, Link } from "@nextui-org/react"
 import { Card, CardHeader, CardBody } from "@nextui-org/react"
 import OnsenSelect from "../../components/selects/OnsenSelect"
+import PrefectureSelect from '../../components/selects/PrefectureSelect'
+import CreateOnsenModal from '@/app/components/modals/CreateOnsenModal'
 
-const Onsens = () => {
+const AllOnsens = () => {
   const [onsens, setOnsens] = useState<Onsen[]>([])
+  const [prefectures, setPrefectures] = useState<Prefecture[]>([])
 
   const fetchOnsens = async () => {
     try {
@@ -21,14 +24,31 @@ const Onsens = () => {
     }
   }
 
-  const displayQuality = (onsen: any) => <span>{onsen.quality}</span>;
-  const displayQualityText = (onsen: any) => onsen.quality;
+  const fetchPrefectures = async () => {
+    try {
+      const res = await axios.get<Prefecture[]>('http://localhost:3000/api/v1/prefectures')
 
-  const displayPrefecture = (onsen: any) => <span>{onsen.pref}</span>;
-  const displayPrefectureText = (onsen: any) => onsen.pref;
+      setPrefectures(res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const displayQuality = (onsen: any) => <span>{onsen.quality}</span>
+  const displayQualityText = (onsen: any) => onsen.quality
+
+  const [isOpen, setIsOpen] = useState(false)
+  const onOpenChange = (newOpenValue: boolean) => {
+    setIsOpen(newOpenValue);
+  }
+
+  const onOpen = () => {
+    setIsOpen(true);
+  }
 
   useEffect(() => {
-    fetchOnsens()
+    fetchOnsens(),
+    fetchPrefectures()
   }, [])
 
   return (
@@ -38,22 +58,38 @@ const Onsens = () => {
           <h1 className="font-notojp text-5xl font-bold text-emerald-600 my-4">温泉データベース</h1>
           <p className="font-notojp text-xl text-gray-600">温泉の情報を登録してみんなで共有しよう！</p>
         </div>
-        <div className='mb-5 w-96'>
-          <Input
-            classNames={{
-              base: "w-screen sm:max-w-[10rem] h-12",
-              mainWrapper: "h-full w-96",
-              input: "text-md",
-              inputWrapper: "h-full w-full font-normal text-default-500 bg-default-300/20",
-            }}
-            placeholder="温泉名を入力してください"
-            size="sm"
-            // startContent={<SearchIcon size={18} />}
-            type="search"
-          />
+        <div>
+          <Button onPress={onOpen} className="mt-2 w-52 mb-7 bg-theme border-theme font-notojp font-medium text-white text-base" variant="bordered">
+            ＋ 温泉を追加する
+          </Button>
+
+          <Modal
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+            placement="top-center"
+            className="w-1/2"
+            size={"4xl"}
+          >
+            <ModalContent>
+              {(onClose) => <CreateOnsenModal onClose={onClose} />}
+            </ModalContent>
+          </Modal>
+
         </div>
       </div>
-      <div className='ml-3'>
+      <div className='ml-3 flex flex-row items-center w-full'>
+        <Input
+          classNames={{
+            base: "h-12 mb-3",
+            mainWrapper: "h-full w-96",
+            input: "text-md",
+            inputWrapper: "h-full w-full font-normal text-default-500 bg-default-300/20",
+          }}
+          placeholder="温泉名を入力してください"
+          size="sm"
+          // startContent={<SearchIcon size={18} />}
+          type="search"
+        />
         <OnsenSelect
           label="泉質から選ぶ"
           placeholder="希望の泉質を選択してください"
@@ -62,12 +98,12 @@ const Onsens = () => {
           displayText={displayQualityText}
           className="max-w-xs mb-3 mr-3"
         />
-        <OnsenSelect
+        <PrefectureSelect
+          isRequired={false}
           label="都道府県から選ぶ"
-          placeholder="希望の都道府県を選択してください"
-          onsens={onsens}
-          displayValue={displayPrefecture}
-          displayText={displayPrefectureText}
+          placeholder="都道府県を選択してください"
+          prefectures={prefectures}
+          variant="flat"
           className="max-w-xs mb-3 mr-3"
         />
       </div>
@@ -90,7 +126,7 @@ const Onsens = () => {
                 <small className="text-default-500">{onsen.quality}</small>
                 <p className="text-default-500 text-sm overflow-hidden line-clamp-2">{onsen.description}</p>
                 <Link href={`/onsens/${onsen.id}`}>
-                  <p className=" text-sm mt-6 mr-5 text-right text-emerald-600">もっとみる→</p>
+                  <p className=" text-sm mt-6 mr-5 ml-auto text-emerald-600">もっとみる→</p>
                 </Link>
               </CardBody>
             </Card>
@@ -104,4 +140,4 @@ const Onsens = () => {
   )
 }
 
-export default Onsens;
+export default AllOnsens

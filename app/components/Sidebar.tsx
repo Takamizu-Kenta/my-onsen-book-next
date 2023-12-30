@@ -24,7 +24,9 @@ const Sidebar = () => {
                 <Image src={sidebarIcon} alt="Right Arrow" width={9} height={9} />
             </li>
             <li className="mt-10 text-xl flex justify-between items-center">
-              <p className="pb-0.5 pr-5">MyOnsenBookとは</p>
+              <Link href="/onsens">
+                <p className="pb-0.5 pr-5">温泉データベース</p>
+              </Link>
               <Image src={sidebarIcon} alt="Right Arrow" width={9} height={9} />
             </li>
             <li className="mt-10 text-xl flex justify-between items-center">
