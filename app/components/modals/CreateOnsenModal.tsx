@@ -1,6 +1,5 @@
 import React from 'react'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { Prefecture } from '../../src/types/prefecture'
 import PrefectureSelect from '../selects/PrefectureSelect'
@@ -8,6 +7,7 @@ import { ModalHeader, ModalBody, ModalFooter, Button, Input, Checkbox, Textarea 
 
 interface CreateOnsenModalProps {
   onClose: () => void
+  prefectures: Prefecture[]
 }
 
 interface OnsenData {
@@ -19,20 +19,7 @@ interface OnsenData {
   effects: string
 }
 
-const CreateOnsenModal: React.FC<CreateOnsenModalProps> = ({ onClose }) => {
-  const [prefectures, setPrefectures] = useState<Prefecture[]>([])
-
-  const fetchPrefectures = async () => {
-    try {
-      const res = await axios.get<Prefecture[]>('http://localhost:3000/api/v1/prefectures')
-
-      setPrefectures(res.data)
-    } catch (err) {
-      console.log(err)
-      alert('都道府県データの取得に失敗しました。')
-    }
-  }
-
+const CreateOnsenModal: React.FC<CreateOnsenModalProps> = ({ onClose, prefectures }) => {
   const { register, handleSubmit, control, formState: { errors } } = useForm<OnsenData>({
     criteriaMode: 'all',
     mode: 'onBlur',
@@ -56,11 +43,6 @@ const CreateOnsenModal: React.FC<CreateOnsenModalProps> = ({ onClose }) => {
       alert('リクエストに失敗しました。データの重複等がないかを確認してください。')
     }
   }
-
-  useEffect(() => {
-    fetchPrefectures()
-  }
-  , [])
 
   return (
     <>

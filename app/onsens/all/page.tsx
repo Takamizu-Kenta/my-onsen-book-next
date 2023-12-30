@@ -71,7 +71,7 @@ const AllOnsens = () => {
             size={"4xl"}
           >
             <ModalContent>
-              {(onClose) => <CreateOnsenModal onClose={onClose} />}
+              {(onClose) => <CreateOnsenModal onClose={onClose} prefectures={prefectures} />}
             </ModalContent>
           </Modal>
 
