@@ -2,23 +2,23 @@
 
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Onsen } from '../../src/types/onsen'
-import { Prefecture } from '../../src/types/prefecture'
+import { Facility } from '../src/types/facility'
+import { Prefecture } from '../src/types/prefecture'
 import { Modal, ModalContent, Button, Input, Link } from "@nextui-org/react"
 import { Card, CardHeader, CardBody } from "@nextui-org/react"
-import OnsenSelect from "../../components/selects/OnsenSelect"
-import PrefectureSelect from '../../components/selects/PrefectureSelect'
-import CreateOnsenModal from '@/app/components/modals/CreateOnsenModal'
+// import FacilitySelect from "../../components/selects/FacilitySelect"
+import PrefectureSelect from '../components/selects/PrefectureSelect'
+// import CreateFacilityModal from '@/app/components/modals/CreateFacilityModal'
 
-const AllOnsens = () => {
-  const [onsens, setOnsens] = useState<Onsen[]>([])
+const AllFacilities = () => {
+  const [facilities, setFacilities] = useState<Facility[]>([])
   const [prefectures, setPrefectures] = useState<Prefecture[]>([])
 
-  const fetchOnsens = async () => {
+  const fetchFacilities = async () => {
     try {
-      const res = await axios.get<Onsen[]>('http://localhost:3000/api/v1/onsens/all')
+      const res = await axios.get<Facility[]>('http://localhost:3000/api/v1/facilities')
 
-      setOnsens(res.data)
+      setFacilities(res.data)
     } catch (err) {
       console.log(err)
     }
@@ -34,8 +34,8 @@ const AllOnsens = () => {
     }
   }
 
-  const displayQuality = (onsen: any) => <span>{onsen.quality}</span>
-  const displayQualityText = (onsen: any) => onsen.quality
+  const displayQuality = (facility: any) => <span>{facility.quality}</span>
+  const displayQualityText = (facility: any) => facility.quality
 
   const [isOpen, setIsOpen] = useState(false)
   const onOpenChange = (newOpenValue: boolean) => {
@@ -47,7 +47,7 @@ const AllOnsens = () => {
   }
 
   useEffect(() => {
-    fetchOnsens(),
+    fetchFacilities(),
     fetchPrefectures()
   }, [])
 
@@ -55,15 +55,15 @@ const AllOnsens = () => {
     <div className='p-8'>
       <div className="flex items-end justify-between">
         <div className='mb-5'>
-          <h1 className="font-notojp text-5xl font-bold text-emerald-600 my-4">温泉データベース</h1>
-          <p className="font-notojp text-xl text-gray-600">温泉の情報を登録してみんなで共有しよう！</p>
+          <h1 className="font-notojp text-5xl font-bold text-emerald-600 my-4">施設データベース</h1>
+          <p className="font-notojp text-xl text-gray-600">温泉施設周辺の施設データベース</p>
         </div>
         <div>
           <Button onPress={onOpen} className="mt-2 w-52 mb-7 bg-theme border-theme font-notojp font-medium text-white text-base" variant="bordered">
-            ＋ 温泉を追加する
+            ＋ 施設を追加する
           </Button>
 
-          <Modal
+          {/* <Modal
             isOpen={isOpen}
             onOpenChange={onOpenChange}
             placement="top-center"
@@ -73,8 +73,7 @@ const AllOnsens = () => {
             <ModalContent>
               {(onClose) => <CreateOnsenModal onClose={onClose} />}
             </ModalContent>
-          </Modal>
-
+          </Modal> */}
         </div>
       </div>
       <div className='ml-3 flex flex-row items-center w-full'>
@@ -85,18 +84,10 @@ const AllOnsens = () => {
             input: "text-md",
             inputWrapper: "h-full w-full font-normal text-default-500 bg-default-300/20",
           }}
-          placeholder="温泉名を入力してください"
+          placeholder="施設名を入力してください"
           size="sm"
           // startContent={<SearchIcon size={18} />}
           type="search"
-        />
-        <OnsenSelect
-          label="泉質から選ぶ"
-          placeholder="希望の泉質を選択してください"
-          onsens={onsens}
-          displayValue={displayQuality}
-          displayText={displayQualityText}
-          className="max-w-xs mb-3 mr-3"
         />
         <PrefectureSelect
           isRequired={false}
@@ -109,23 +100,21 @@ const AllOnsens = () => {
       </div>
       <div className="flex flex-col w-full items-center">
         <div className="grid grid-cols-1 justify-center w-full">
-          {onsens.map((onsen) => (
-            <Card  key={onsen.id} className="py-4 m-2 w-full" shadow="none">
+          {facilities.map((facility) => (
+            <Card  key={facility.id} className="py-4 m-2 w-full" shadow="none">
               <CardHeader className="pb-2 pt-1 px-4 flex flex-col items-start border-b-2">
                 <div className="flex items-end mb-2">
-                  <p className="text-sm font-bold">{onsen.pref}</p>
-                  <p className="text-tiny font-bold ml-2 text-gray-500">{onsen.onsen_area_name}</p>
+                  <p className="text-sm font-bold">{facility.pref}</p>
+                  <p className="text-tiny font-bold ml-2 text-gray-500">{facility.onsen_name}</p>
                 </div>
                 <div className='flex items-baseline'>
-                  <h4 className="font-bold text-xl mr-3">{onsen.onsen_name}</h4>
-                  <small className="text-default-500">{onsen.onsen_name_kana}</small>
+                  <h4 className="font-bold text-xl mr-3">{facility.facility_name}</h4>
                 </div>
               </CardHeader>
               <CardBody className="overflow-visible py-2">
-                <small className="text-default-500">主な泉質</small>
-                <small className="text-default-500">{onsen.quality}</small>
-                <p className="text-default-500 text-sm overflow-hidden line-clamp-2">{onsen.description}</p>
-                <Link href={`/onsens/${onsen.id}`}>
+                <p className="text-default-500 text-sm overflow-hidden line-clamp-2">{facility.address}</p>
+                <p className="text-sm font-bold overflow-hidden line-clamp-2 mt-5">{facility.description}</p>
+                <Link href={`/facilities/${facility.id}`}>
                   <p className=" text-sm mt-6 mr-5 ml-auto text-emerald-600">もっとみる→</p>
                 </Link>
               </CardBody>
@@ -140,4 +129,4 @@ const AllOnsens = () => {
   )
 }
 
-export default AllOnsens
+export default AllFacilities
