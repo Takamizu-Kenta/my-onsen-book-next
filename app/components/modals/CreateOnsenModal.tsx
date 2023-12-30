@@ -1,5 +1,5 @@
 import React from 'react'
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { Prefecture } from '../../src/types/prefecture'
@@ -21,7 +21,6 @@ interface OnsenData {
 
 const CreateOnsenModal: React.FC<CreateOnsenModalProps> = ({ onClose }) => {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([])
-  const [error, setError] = useState<string>('')
 
   const fetchPrefectures = async () => {
     try {
@@ -30,6 +29,7 @@ const CreateOnsenModal: React.FC<CreateOnsenModalProps> = ({ onClose }) => {
       setPrefectures(res.data)
     } catch (err) {
       console.log(err)
+      alert('都道府県データの取得に失敗しました。')
     }
   }
 
@@ -53,6 +53,7 @@ const CreateOnsenModal: React.FC<CreateOnsenModalProps> = ({ onClose }) => {
       onClose()
     } catch (error) {
       console.error(error)
+      alert('リクエストに失敗しました。データの重複等がないかを確認してください。')
     }
   }
 
