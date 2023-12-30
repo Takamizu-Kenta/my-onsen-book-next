@@ -11,7 +11,10 @@ const config: Config = {
     extend: {
       fontFamily: {
         notojp: ['var(--font-notojp)'],
-      }
+      },
+      colors: {
+        theme: "#059669" // green-600
+      },
     },
   },
   plugins: [require("daisyui"), nextui()]
