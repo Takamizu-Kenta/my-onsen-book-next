@@ -109,7 +109,7 @@ const AllOnsens = () => {
       </div>
       <div className="flex flex-col w-full items-center">
         <div className="grid grid-cols-1 justify-center w-full">
-          {onsens.map((onsen: any) => (
+          {onsens.map((onsen) => (
             <Card  key={onsen.id} className="py-4 m-2 w-full" shadow="none">
               <CardHeader className="pb-2 pt-1 px-4 flex flex-col items-start border-b-2">
                 <div className="flex items-end mb-2">

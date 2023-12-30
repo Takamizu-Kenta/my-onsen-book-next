@@ -9,5 +9,5 @@ export type Onsen = {
   address: string
   onsen_area_name: string
   description: string
-};
+}
 
