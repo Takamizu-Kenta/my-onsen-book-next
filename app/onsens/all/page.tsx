@@ -124,7 +124,7 @@ const AllOnsens = () => {
               <CardBody className="overflow-visible py-2">
                 <small className="text-default-500">主な泉質</small>
                 <small className="text-default-500">{onsen.quality}</small>
-                <p className="text-default-500 text-sm overflow-hidden line-clamp-2">{onsen.description}</p>
+                <p className="text-default-500 text-sm overflow-hidden line-clamp-2">{onsen.onsen_description}</p>
                 <Link href={`/onsens/${onsen.id}`}>
                   <p className=" text-sm mt-6 mr-5 ml-auto text-emerald-600">もっとみる→</p>
                 </Link>

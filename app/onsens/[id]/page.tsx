@@ -73,7 +73,7 @@ const ShowOnsen = () => {
           <Image src='https://placehold.jp/1280x720.png' alt='Onsen Image' width={1280} height={720} />
         </div>
         <div className='flex-2 w-1/2 m-2 leading-8'>
-          <p>{onsen.description}</p>
+          <p>{onsen.onsen_description}</p>
         </div>
       </div>
       <div className='mt-10'>

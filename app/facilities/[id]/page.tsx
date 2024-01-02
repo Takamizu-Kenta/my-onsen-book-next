@@ -59,7 +59,7 @@ const FacilityShow = () => {
           <Image src='https://placehold.jp/1280x720.png' alt='Onsen Image' width={1280} height={720} />
         </div>
         <div className='flex-2 w-1/2 m-2 leading-8'>
-          <p>{facility.description}</p>
+          <p>{facility.facility_description}</p>
         </div>
       </div>
       <div className='mt-10'>
@@ -103,7 +103,7 @@ const FacilityShow = () => {
                 <h4 className='font-notojp text-xl font-semibold text-gray-600 align-top my-3'>{relatedOnsen?.onsen_name}</h4>
               </Link>
               <p className='font-notojp text-sm text-gray-400'>{relatedOnsen?.pref}</p>
-              <p className='font-notojp text-base text-gray-600 mt-5'>{relatedOnsen?.description}</p>
+              <p className='font-notojp text-base text-gray-600 mt-5'>{relatedOnsen?.onsen_description}</p>
               <Link className='mt-auto' href={`/onsens/${relatedOnsen?.id}`}>
                 <p className=" text-sm mr-5 ml-auto text-emerald-600">もっとみる→</p>
               </Link>
@@ -147,4 +147,4 @@ const FacilityShow = () => {
   )
 }
 
-export default FacilityShow;
+export default FacilityShow

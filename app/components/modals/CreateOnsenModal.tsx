@@ -14,7 +14,7 @@ interface OnsenData {
   onsen_name: string
   onsen_name_kana: string
   pref: string
-  description: string
+  onsen_description: string
   quality: string
   effects: string
 }
@@ -29,7 +29,7 @@ const CreateOnsenModal: React.FC<CreateOnsenModalProps> = ({ onClose, prefecture
       pref: '',
       quality: '',
       effects: '',
-      description: ''
+      onsen_description: ''
     }
   })
 
@@ -147,10 +147,10 @@ const CreateOnsenModal: React.FC<CreateOnsenModalProps> = ({ onClose, prefecture
               label="温泉の説明"
               placeholder="日本三名泉の1つである草津温泉。 自然湧出量は日本一を誇り毎分32,300リットル以上、1日にドラム缶約23万本分もの温泉が湧き出しています"
               variant="bordered"
-              errorMessage={errors.description?.message}
-              isInvalid={!!errors.description}
+              errorMessage={errors.onsen_description?.message}
+              isInvalid={!!errors.onsen_description}
               className="w-full"
-              {...register("description", {
+              {...register("onsen_description", {
                 required: {
                   value: true,
                   message: "説明の入力は必須です。",
