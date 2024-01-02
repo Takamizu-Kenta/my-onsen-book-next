@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Facility } from '../src/types/facility'
+import { FacilityType } from '../src/types/facilityType'
 import { Prefecture } from '../src/types/prefecture'
 import { Modal, ModalContent, Button, Input, Link } from "@nextui-org/react"
 import { Card, CardHeader, CardBody } from "@nextui-org/react"
@@ -12,6 +13,7 @@ import PrefectureSelect from '../components/selects/PrefectureSelect'
 
 const AllFacilities = () => {
   const [facilities, setFacilities] = useState<Facility[]>([])
+  const [facilityTypes, setFacilityTypes] = useState<FacilityType[]>([])
   const [prefectures, setPrefectures] = useState<Prefecture[]>([])
 
   const fetchFacilities = async () => {
@@ -19,6 +21,16 @@ const AllFacilities = () => {
       const res = await axios.get<Facility[]>('http://localhost:3000/api/v1/facilities')
 
       setFacilities(res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const fetchFacilityTypes = async () => {
+    try {
+      const res = await axios.get<FacilityType[]>('http://localhost:3000/api/v1/facility_types')
+
+      setFacilityTypes(res.data)
     } catch (err) {
       console.log(err)
     }
@@ -48,7 +60,7 @@ const AllFacilities = () => {
 
   useEffect(() => {
     fetchFacilities(),
-    fetchPrefectures()
+    fetchFacilityTypes(),
   }, [])
 
   return (

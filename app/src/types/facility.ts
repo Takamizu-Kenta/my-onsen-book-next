@@ -4,6 +4,7 @@ export type Facility = {
   id: number
   facility_name: string
   facility_type: string
+  facility_type_id: number
   post_code: string
   city: string
   facility_link: string
