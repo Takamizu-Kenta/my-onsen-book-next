@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { Select, SelectItem } from '@nextui-org/react'
 
 interface Attributes {
@@ -22,7 +22,8 @@ interface FacilityTypeSelectProps {
   className?: string
 }
 
-const FacilityTypeSelect: React.FC<FacilityTypeSelectProps> = ({ label, placeholder, facilityTypes, variant, className, isRequired, errorMessage, isInvalid, ...field }) => {
+const FacilityTypeSelect = forwardRef<HTMLDivElement, FacilityTypeSelectProps>(
+  ({ label, placeholder, facilityTypes, variant, className, isRequired, errorMessage, isInvalid, ...field }) => {
   return (
     <Select
       label={label}
@@ -41,7 +42,7 @@ const FacilityTypeSelect: React.FC<FacilityTypeSelectProps> = ({ label, placehol
         </SelectItem>
       ))}
     </Select>
-  )
-}
+  );
+});
 
 export default FacilityTypeSelect

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { Select, SelectItem } from '@nextui-org/react'
 
 interface Onsen {
@@ -17,7 +17,8 @@ interface OnsenSelectProps {
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }
 
-const OnsenSelect: React.FC<OnsenSelectProps> = ({ label, placeholder, onsens, variant, className, errorMessage, isInvalid,isRequired, ...field }) => {
+const OnsenSelect= forwardRef<HTMLDivElement, OnsenSelectProps>(
+  ({ label, placeholder, onsens, variant, className, errorMessage, isInvalid,isRequired, ...field }) => {
   return (
     <Select
       label={label}
@@ -36,7 +37,7 @@ const OnsenSelect: React.FC<OnsenSelectProps> = ({ label, placeholder, onsens, v
         </SelectItem>
       ))}
     </Select>
-  );
-};
+  )
+})
 
 export default OnsenSelect
