@@ -8,6 +8,6 @@ export type Onsen = {
   pref: string
   address: string
   onsen_area_name: string
-  description: string
+  onsen_description: string
 }
 

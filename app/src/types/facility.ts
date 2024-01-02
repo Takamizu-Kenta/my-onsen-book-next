@@ -9,7 +9,7 @@ export type Facility = {
   facility_link: string
   pref: string
   address: string
-  description: string
+  facility_description: string
   onsen_name: string
 }
 
