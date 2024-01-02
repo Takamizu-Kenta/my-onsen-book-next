@@ -6,7 +6,6 @@ import { Onsen } from '../../src/types/onsen'
 import { Prefecture } from '../../src/types/prefecture'
 import { Modal, ModalContent, Button, Input, Link } from "@nextui-org/react"
 import { Card, CardHeader, CardBody } from "@nextui-org/react"
-import OnsenSelect from "../../components/selects/OnsenSelect"
 import PrefectureSelect from '../../components/selects/PrefectureSelect'
 import CreateOnsenModal from '@/app/components/modals/CreateOnsenModal'
 
@@ -33,9 +32,6 @@ const AllOnsens = () => {
       console.log(err)
     }
   }
-
-  const displayQuality = (onsen: any) => <span>{onsen.quality}</span>
-  const displayQualityText = (onsen: any) => onsen.quality
 
   const [isOpen, setIsOpen] = useState(false)
   const onOpenChange = (newOpenValue: boolean) => {
@@ -71,7 +67,7 @@ const AllOnsens = () => {
             size={"4xl"}
           >
             <ModalContent>
-              {(onClose) => <CreateOnsenModal onClose={onClose} />}
+              {(onClose) => <CreateOnsenModal onClose={onClose} prefectures={prefectures} />}
             </ModalContent>
           </Modal>
 
@@ -89,14 +85,6 @@ const AllOnsens = () => {
           size="sm"
           // startContent={<SearchIcon size={18} />}
           type="search"
-        />
-        <OnsenSelect
-          label="泉質から選ぶ"
-          placeholder="希望の泉質を選択してください"
-          onsens={onsens}
-          displayValue={displayQuality}
-          displayText={displayQualityText}
-          className="max-w-xs mb-3 mr-3"
         />
         <PrefectureSelect
           isRequired={false}
@@ -124,7 +112,7 @@ const AllOnsens = () => {
               <CardBody className="overflow-visible py-2">
                 <small className="text-default-500">主な泉質</small>
                 <small className="text-default-500">{onsen.quality}</small>
-                <p className="text-default-500 text-sm overflow-hidden line-clamp-2">{onsen.description}</p>
+                <p className="text-default-500 text-sm overflow-hidden line-clamp-2">{onsen.onsen_description}</p>
                 <Link href={`/onsens/${onsen.id}`}>
                   <p className=" text-sm mt-6 mr-5 ml-auto text-emerald-600">もっとみる→</p>
                 </Link>

@@ -60,7 +60,7 @@ const Onsens = () => {
                 <small className="text-default-500">{onsen.quality}</small>
               </CardHeader>
               <CardBody className="overflow-visible py-2">
-                <p className="text-default-500 text-sm overflow-hidden line-clamp-2">{onsen.description}</p>
+                <p className="text-default-500 text-sm overflow-hidden line-clamp-2">{onsen.onsen_description}</p>
                 <Link href={`/onsens/${onsen.id}`}>
                   <p className=" text-sm mt-6 text-right text-emerald-600">もっとみる→</p>
                 </Link>
