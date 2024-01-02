@@ -4,17 +4,19 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Facility } from '../src/types/facility'
 import { FacilityType } from '../src/types/facilityType'
+import { Onsen } from '../src/types/onsen'
 import { Prefecture } from '../src/types/prefecture'
 import { Modal, ModalContent, Button, Input, Link } from "@nextui-org/react"
 import { Card, CardHeader, CardBody } from "@nextui-org/react"
 // import FacilitySelect from "../../components/selects/FacilitySelect"
 import PrefectureSelect from '../components/selects/PrefectureSelect'
-// import CreateFacilityModal from '@/app/components/modals/CreateFacilityModal'
+import CreateFacilityModal from '../components/modals/CreateFacilityModal'
 
 const AllFacilities = () => {
   const [facilities, setFacilities] = useState<Facility[]>([])
   const [facilityTypes, setFacilityTypes] = useState<FacilityType[]>([])
   const [prefectures, setPrefectures] = useState<Prefecture[]>([])
+  const [onsens, setOnsens] = useState<Onsen[]>([])
 
   const fetchFacilities = async () => {
     try {
@@ -36,6 +38,16 @@ const AllFacilities = () => {
     }
   }
 
+  const fetchOnsens = async () => {
+    try {
+      const res = await axios.get<Onsen[]>('http://localhost:3000/api/v1/onsens')
+
+      setOnsens(res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const fetchPrefectures = async () => {
     try {
       const res = await axios.get<Prefecture[]>('http://localhost:3000/api/v1/prefectures')
@@ -45,9 +57,6 @@ const AllFacilities = () => {
       console.log(err)
     }
   }
-
-  const displayQuality = (facility: any) => <span>{facility.quality}</span>
-  const displayQualityText = (facility: any) => facility.quality
 
   const [isOpen, setIsOpen] = useState(false)
   const onOpenChange = (newOpenValue: boolean) => {
@@ -61,6 +70,8 @@ const AllFacilities = () => {
   useEffect(() => {
     fetchFacilities(),
     fetchFacilityTypes(),
+    fetchPrefectures(),
+    fetchOnsens()
   }, [])
 
   return (
@@ -75,7 +86,7 @@ const AllFacilities = () => {
             ＋ 施設を追加する
           </Button>
 
-          {/* <Modal
+          <Modal
             isOpen={isOpen}
             onOpenChange={onOpenChange}
             placement="top-center"
@@ -83,9 +94,9 @@ const AllFacilities = () => {
             size={"4xl"}
           >
             <ModalContent>
-              {(onClose) => <CreateOnsenModal onClose={onClose} />}
+              {onClose => <CreateFacilityModal onClose={onClose} prefectures={prefectures} onsens={onsens} facilityTypes={facilityTypes} />}
             </ModalContent>
-          </Modal> */}
+          </Modal>
         </div>
       </div>
       <div className='ml-3 flex flex-row items-center w-full'>
@@ -125,7 +136,7 @@ const AllFacilities = () => {
               </CardHeader>
               <CardBody className="overflow-visible py-2">
                 <p className="text-default-500 text-sm overflow-hidden line-clamp-2">{facility.address}</p>
-                <p className="text-sm font-bold overflow-hidden line-clamp-2 mt-5">{facility.description}</p>
+                <p className="text-sm font-bold text-gray-600 overflow-hidden line-clamp-2 mt-5">{facility.facility_description}</p>
                 <Link href={`/facilities/${facility.id}`}>
                   <p className=" text-sm mt-6 mr-5 ml-auto text-emerald-600">もっとみる→</p>
                 </Link>
