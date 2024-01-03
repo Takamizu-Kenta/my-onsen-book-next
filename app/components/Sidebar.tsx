@@ -6,9 +6,10 @@ import sidebarIcon from './icons/arrow_right_white.png'
 const Sidebar = () => {
   return (
     <div className="bg-emerald-600 p-2 w-96 h-screen">
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center justify-center">
         <Link href="/">
-          <h2 className="font-notojp text-white text-4xl mt-6 mb-4">MyOnsenBook</h2>
+          <p className='font-notojp text-white text-base font-semibold text-center my-3'>つくろう、自分だけの温泉図鑑</p>
+          <h2 className="font-notojp text-white text-4xl font-bold mb-4">MyOnsenBook</h2>
         </Link>
         <div className="font-notojp flex text-white border-gray-200 mt-10 mb-20 text-xl">
           <div className="pr-4 border-r-2 border-white">ログイン</div>
