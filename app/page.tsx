@@ -8,7 +8,7 @@ export default function HomePage() {
 
   return (
     <div>
-      <div className="relative h-screen w-screen">
+      <div className="relative h-screen">
         <Image src={Ginzan} alt="Onsen" layout="fill" objectFit="cover" />
         <div className="absolute top-0 left-0 right-0 bottom-0 bg-white bg-opacity-10"></div>
         <h2 className="text-white font-notojp text-8xl leading-normal font-extrabold absolute bottom-0 left-0 p-4 z-10 mb-3">
@@ -37,7 +37,7 @@ export default function HomePage() {
         <h2 className="font-notojp text-5xl font-bold text-emerald-600 my-4 text-center">最近追加された温泉</h2>
       </div>
       <div className='bg-slate-200 py-2'>
-        <p className="font-notojp text-xl text-black text-center">© my-onsen-book All rights reserved</p>
+        <p className="font-notojp text-sm text-black text-center">© my-onsen-book All rights reserved</p>
       </div>
     </div>
   )
