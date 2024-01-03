@@ -7,7 +7,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Onsen } from '../../src/types/onsen'
 import { Facility } from '../../src/types/facility'
-import { Button } from "@nextui-org/react"
+import { Button, Spinner } from "@nextui-org/react"
 
 const ShowOnsen = () => {
   const [onsen, setOnsen] = useState<Onsen | null>(null)
@@ -44,7 +44,7 @@ const ShowOnsen = () => {
   }, [fetchOnsen, id])
 
   if (!onsen) {
-    return <div>Loading...</div>;
+    return <div className='h-full w-full flex justify-center'><Spinner size="lg" className='align-center justify-center' color='success' /></div>
   }
 
   return (

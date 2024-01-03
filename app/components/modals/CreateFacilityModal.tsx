@@ -1,6 +1,8 @@
 import React from 'react'
 import axios from 'axios'
 import { useState } from 'react'
+import { mutate } from 'swr'
+import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form'
 import { Prefecture } from '../../src/types/prefecture'
 import { Onsen } from '../../src/types/onsen'
@@ -40,6 +42,8 @@ interface FacilityData {
 interface CombinedFormData extends OnsenData, FacilityData {}
 
 const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, prefectures, onsens, facilityTypes }) => {
+  const router = useRouter()
+
   const { register, handleSubmit, control, formState: { errors } } = useForm<CombinedFormData>({
     criteriaMode: 'all',
     mode: 'onBlur',
@@ -53,29 +57,16 @@ const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, pref
     }
   })
 
-  const onSubmit = async (data :any) => {
+  const onSubmit = async (data: CombinedFormData) => {
     let onsenId = data.onsen_id
 
-    if (!isOnsenSelected) {
-      const onsenData: OnsenData = {
-        onsen_name: data.onsen_name,
-        onsen_name_kana: data.onsen_name_kana,
-        pref: data.pref,
-        quality: data.quality,
-        effects: data.effects,
-        onsen_description: data.onsen_description
-      }
-      try {
-        const onsenResponse = await axios.post('http://localhost:3000/api/v1/onsens', { onsen: onsenData })
-
-        // 新しい温泉のIDを取得し設定
-        onsenId = onsenResponse.data.id
-        console.log(onsenId)
-        console.log(onsenResponse.data)
-      } catch (error) {
-        console.error(error)
-        alert('温泉登録リクエストに失敗しました。データの重複等がないかを確認してください。')
-      }
+    const onsenData: OnsenData = {
+      onsen_name: data.onsen_name,
+      onsen_name_kana: data.onsen_name_kana,
+      pref: data.pref,
+      quality: data.quality,
+      effects: data.effects,
+      onsen_description: data.onsen_description
     }
 
     const facilityData: FacilityData = {
@@ -89,18 +80,33 @@ const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, pref
       facility_link: data.facility_link
     }
 
-    try {
-      console.table(facilityData)
-      const facilityResponse = await axios.post('http://localhost:3000/api/v1/facilities', {
-        facility: facilityData,
-        onsen_id: onsenId
-      })
-      console.log(facilityResponse.data)
-      onClose()
-    } catch (error) {
-      console.error(error)
-      alert('施設登録リクエストに失敗しました。データの重複等がないかを確認してください。')
+    if (!isOnsenSelected) {
+      try {
+        await axios.post('http://localhost:3000/api/v1/facility_registrations',
+        {
+          onsen: onsenData ,
+          facility: facilityData
+        })
+        onClose()
+      } catch (error) {
+        console.error(error)
+        alert('温泉･施設登録リクエストに失敗しました。データの重複等がないかを確認してください。')
+      }
+    } else {
+      try {
+        console.table(facilityData)
+        const facilityResponse = await axios.post('http://localhost:3000/api/v1/facilities', {
+          facility: facilityData,
+          onsen_id: onsenId
+        })
+        console.log(facilityResponse.data)
+        onClose()
+      } catch (error) {
+        console.error(error)
+        alert('施設登録リクエストに失敗しました。データの重複等がないかを確認してください。')
+      }
     }
+    mutate('http://localhost:3000/api/v1/facilities')
   }
 
   const [isOnsenSelected, setIsOnsenSelected] = useState(true)
@@ -169,21 +175,6 @@ const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, pref
                 // ここを追加するところから
               )}
             />
-            <Input
-              isRequired
-              label="所在地"
-              placeholder="埼玉県新座市新堀"
-              variant="bordered"
-              errorMessage={errors.address?.message}
-              isInvalid={!!errors.address}
-              className="w-full"
-              {...register("address", {
-                required: {
-                  value: true,
-                  message: "所在地の入力は必須です。",
-                }
-              })}
-            />
             <Controller
               name="pref"
               control={control}
@@ -201,6 +192,21 @@ const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, pref
                   className="w-full"
                 />
               )}
+            />
+            <Input
+              isRequired
+              label="所在地"
+              placeholder="埼玉県新座市新堀"
+              variant="bordered"
+              errorMessage={errors.address?.message}
+              isInvalid={!!errors.address}
+              className="w-full"
+              {...register("address", {
+                required: {
+                  value: true,
+                  message: "所在地の入力は必須です。",
+                }
+              })}
             />
             <Controller
               name="onsen_id"

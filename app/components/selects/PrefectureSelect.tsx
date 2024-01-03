@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { Select, SelectItem } from '@nextui-org/react'
 
 interface Attributes {
@@ -22,7 +22,8 @@ interface PrefectureSelectProps {
   className?: string
 }
 
-const PrefectureSelect: React.FC<PrefectureSelectProps> = ({ label, placeholder, prefectures, variant, className, isRequired, errorMessage, isInvalid, ...field }) => {
+const PrefectureSelect = forwardRef<HTMLDivElement, PrefectureSelectProps>(
+  ({ label, placeholder, prefectures, variant, className, isRequired, errorMessage, isInvalid, ...field }) => {
   return (
     <Select
       label={label}
@@ -42,6 +43,7 @@ const PrefectureSelect: React.FC<PrefectureSelectProps> = ({ label, placeholder,
       ))}
     </Select>
   )
-}
+})
 
+PrefectureSelect.displayName = 'PrefectureSelect'
 export default PrefectureSelect

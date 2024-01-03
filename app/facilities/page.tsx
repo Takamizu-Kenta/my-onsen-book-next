@@ -1,62 +1,19 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import axios from 'axios'
+import useSWR from 'swr'
 import { Facility } from '../src/types/facility'
-import { FacilityType } from '../src/types/facilityType'
-import { Onsen } from '../src/types/onsen'
-import { Prefecture } from '../src/types/prefecture'
-import { Modal, ModalContent, Button, Input, Link } from "@nextui-org/react"
+import { Modal, ModalContent, Button, Input, Link, Spinner } from "@nextui-org/react"
 import { Card, CardHeader, CardBody } from "@nextui-org/react"
-// import FacilitySelect from "../../components/selects/FacilitySelect"
 import PrefectureSelect from '../components/selects/PrefectureSelect'
 import CreateFacilityModal from '../components/modals/CreateFacilityModal'
 
 const AllFacilities = () => {
-  const [facilities, setFacilities] = useState<Facility[]>([])
-  const [facilityTypes, setFacilityTypes] = useState<FacilityType[]>([])
-  const [prefectures, setPrefectures] = useState<Prefecture[]>([])
-  const [onsens, setOnsens] = useState<Onsen[]>([])
-
-  const fetchFacilities = async () => {
-    try {
-      const res = await axios.get<Facility[]>('http://localhost:3000/api/v1/facilities')
-
-      setFacilities(res.data)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const fetchFacilityTypes = async () => {
-    try {
-      const res = await axios.get<FacilityType[]>('http://localhost:3000/api/v1/facility_types')
-
-      setFacilityTypes(res.data)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const fetchOnsens = async () => {
-    try {
-      const res = await axios.get<Onsen[]>('http://localhost:3000/api/v1/onsens')
-
-      setOnsens(res.data)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const fetchPrefectures = async () => {
-    try {
-      const res = await axios.get<Prefecture[]>('http://localhost:3000/api/v1/prefectures')
-
-      setPrefectures(res.data)
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  const { data: onsens, error: onsensError } = useSWR('http://localhost:3000/api/v1/onsens/all', (url) => axios.get(url).then(res => res.data))
+  const { data: prefectures, error: prefecturesError } = useSWR('http://localhost:3000/api/v1/prefectures', (url) => axios.get(url).then(res => res.data))
+  const { data: facilityTypes, error: facilityTypesError } = useSWR('http://localhost:3000/api/v1/facility_types', (url) => axios.get(url).then(res => res.data))
+  const { data: facilities, error: facilitiesError } = useSWR('http://localhost:3000/api/v1/facilities', (url) => axios.get(url).then(res => res.data))
 
   const [isOpen, setIsOpen] = useState(false)
   const onOpenChange = (newOpenValue: boolean) => {
@@ -64,15 +21,17 @@ const AllFacilities = () => {
   }
 
   const onOpen = () => {
-    setIsOpen(true);
+    setIsOpen(true)
   }
 
-  useEffect(() => {
-    fetchFacilities(),
-    fetchFacilityTypes(),
-    fetchPrefectures(),
-    fetchOnsens()
-  }, [])
+  if (onsensError || prefecturesError || facilityTypesError || facilitiesError) {
+    console.error(onsensError || prefecturesError || facilityTypesError || facilitiesError)
+    return <div>データの読み込みに失敗しました。</div>
+  }
+
+  if (!onsens || !prefectures || !facilityTypes || !facilities) {
+    return <div className='h-full w-full flex justify-center'><Spinner size="lg" className='align-center justify-center' color='success' /></div>
+  }
 
   return (
     <div className='p-8'>
@@ -123,7 +82,7 @@ const AllFacilities = () => {
       </div>
       <div className="flex flex-col w-full items-center">
         <div className="grid grid-cols-1 justify-center w-full">
-          {facilities.map((facility) => (
+          {facilities.map((facility: Facility) => (
             <Card  key={facility.id} className="py-4 m-2 w-full" shadow="none">
               <CardHeader className="pb-2 pt-1 px-4 flex flex-col items-start border-b-2">
                 <div className="flex items-end mb-2">

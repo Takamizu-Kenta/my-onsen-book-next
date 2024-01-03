@@ -6,7 +6,7 @@ import axios from 'axios'
 import Image from 'next/image'
 import { Onsen } from '../../src/types/onsen'
 import { FacilityResponse, Facility } from '../../src/types/facility'
-import { Button, Link } from "@nextui-org/react"
+import { Button, Link, Spinner } from "@nextui-org/react"
 
 const FacilityShow = () => {
   const [facility, setFacility] = useState<Facility | null>(null)
@@ -33,7 +33,7 @@ const FacilityShow = () => {
   }, [fetchFacility, id])
 
   if (!facility) {
-    return <div>Loading...</div>;
+    return <div className='h-full w-full flex justify-center'><Spinner size="lg" className='align-center justify-center' color='success' /></div>
   }
 
   return (

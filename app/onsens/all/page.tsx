@@ -2,36 +2,18 @@
 
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import useSWR from 'swr'
 import { Onsen } from '../../src/types/onsen'
 import { Prefecture } from '../../src/types/prefecture'
-import { Modal, ModalContent, Button, Input, Link } from "@nextui-org/react"
+import { Modal, ModalContent, Button, Input, Link, Spinner } from "@nextui-org/react"
 import { Card, CardHeader, CardBody } from "@nextui-org/react"
 import PrefectureSelect from '../../components/selects/PrefectureSelect'
 import CreateOnsenModal from '@/app/components/modals/CreateOnsenModal'
 
 const AllOnsens = () => {
-  const [onsens, setOnsens] = useState<Onsen[]>([])
-  const [prefectures, setPrefectures] = useState<Prefecture[]>([])
+  const { data: onsens, error: onsensError } = useSWR('http://localhost:3000/api/v1/onsens/all', (url) => axios.get(url).then(res => res.data))
+  const { data: prefectures, error: prefecturesError } = useSWR('http://localhost:3000/api/v1/prefectures', (url) => axios.get(url).then(res => res.data))
 
-  const fetchOnsens = async () => {
-    try {
-      const res = await axios.get<Onsen[]>('http://localhost:3000/api/v1/onsens/all')
-
-      setOnsens(res.data)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const fetchPrefectures = async () => {
-    try {
-      const res = await axios.get<Prefecture[]>('http://localhost:3000/api/v1/prefectures')
-
-      setPrefectures(res.data)
-    } catch (err) {
-      console.log(err)
-    }
-  }
 
   const [isOpen, setIsOpen] = useState(false)
   const onOpenChange = (newOpenValue: boolean) => {
@@ -42,10 +24,14 @@ const AllOnsens = () => {
     setIsOpen(true);
   }
 
-  useEffect(() => {
-    fetchOnsens(),
-    fetchPrefectures()
-  }, [])
+  if (onsensError || prefecturesError) {
+    console.error(onsensError || prefecturesError)
+    return <div>データの読み込みに失敗しました。</div>
+  }
+
+  if (!onsens || !prefectures) {
+    return <div className='h-full w-full flex justify-center'><Spinner size="lg" className='align-center justify-center' color='success' /></div>
+  }
 
   return (
     <div className='p-8'>
@@ -97,7 +83,7 @@ const AllOnsens = () => {
       </div>
       <div className="flex flex-col w-full items-center">
         <div className="grid grid-cols-1 justify-center w-full">
-          {onsens.map((onsen) => (
+          {onsens.map((onsen: Onsen) => (
             <Card  key={onsen.id} className="py-4 m-2 w-full" shadow="none">
               <CardHeader className="pb-2 pt-1 px-4 flex flex-col items-start border-b-2">
                 <div className="flex items-end mb-2">

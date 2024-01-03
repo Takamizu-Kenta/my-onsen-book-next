@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import { mutate } from 'swr'
 import { useForm, Controller } from 'react-hook-form'
 import { Prefecture } from '../../src/types/prefecture'
 import PrefectureSelect from '../selects/PrefectureSelect'
@@ -38,6 +39,7 @@ const CreateOnsenModal: React.FC<CreateOnsenModalProps> = ({ onClose, prefecture
       const response = await axios.post('http://localhost:3000/api/v1/onsens', { onsen: data });
       console.log(response.data)
       onClose()
+      mutate('http://localhost:3000/api/v1/onsens/all')
     } catch (error) {
       console.error(error)
       alert('リクエストに失敗しました。データの重複等がないかを確認してください。')
