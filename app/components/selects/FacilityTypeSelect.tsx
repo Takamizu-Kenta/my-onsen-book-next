@@ -42,7 +42,8 @@ const FacilityTypeSelect = forwardRef<HTMLDivElement, FacilityTypeSelectProps>(
         </SelectItem>
       ))}
     </Select>
-  );
-});
+  )
+})
 
+FacilityTypeSelect.displayName = 'FacilityTypeSelect'
 export default FacilityTypeSelect

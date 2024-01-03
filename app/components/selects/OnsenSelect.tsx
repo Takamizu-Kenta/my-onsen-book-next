@@ -40,4 +40,5 @@ const OnsenSelect= forwardRef<HTMLDivElement, OnsenSelectProps>(
   )
 })
 
+OnsenSelect.displayName = 'OnsenSelect'
 export default OnsenSelect

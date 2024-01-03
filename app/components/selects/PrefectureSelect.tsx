@@ -45,4 +45,5 @@ const PrefectureSelect = forwardRef<HTMLDivElement, PrefectureSelectProps>(
   )
 })
 
+PrefectureSelect.displayName = 'PrefectureSelect'
 export default PrefectureSelect
