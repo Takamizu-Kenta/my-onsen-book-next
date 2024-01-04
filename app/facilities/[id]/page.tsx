@@ -8,7 +8,7 @@ import { Onsen } from '../../src/types/onsen'
 import { FacilityResponse, Facility } from '../../src/types/facility'
 import { Button, Link, Spinner } from "@nextui-org/react"
 
-const FacilityShow = () => {
+const ShowFacility = () => {
   const [facility, setFacility] = useState<Facility | null>(null)
   const [relatedOnsen, setRelatedOnsen] = useState<Onsen | null>(null)
 
@@ -147,4 +147,4 @@ const FacilityShow = () => {
   )
 }
 
-export default FacilityShow
+export default ShowFacility
