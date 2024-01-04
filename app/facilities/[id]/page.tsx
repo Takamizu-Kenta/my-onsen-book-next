@@ -56,7 +56,11 @@ const ShowFacility = () => {
       </div>
       <div className='flex'>
         <div className='flex-1 w-1/2 m-2'>
-          <Image src='https://placehold.jp/1280x720.png' alt='Onsen Image' width={1280} height={720} />
+          {facility.facility_image ? (
+            <Image src={facility.facility_image} alt='Facility Image' width={1280} height={720} />
+          ) : (
+            <Image src='https://placehold.jp/1280x720.png' alt='No Image' width={1280} height={720} />
+          )}
         </div>
         <div className='flex-2 w-1/2 m-2 leading-8'>
           <p>{facility.facility_description}</p>
@@ -82,9 +86,11 @@ const ShowFacility = () => {
             </tr>
             <tr>
               <th className="py-3 text-left text-sm font-medium text-gray-500 tracking-wider">公式HP</th>
-              <Link isBlock showAnchorIcon href={facility.facility_link} color="primary" className='px-6 py-4 text-lg font-notojp'>
-                {facility.facility_link}
-              </Link>
+              <td className="px-6 py-4 text-lg font-notojp">
+                <Link isBlock showAnchorIcon href={facility.facility_link} color="primary">
+                  {facility.facility_link}
+                </Link>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -96,7 +102,11 @@ const ShowFacility = () => {
         <div>
           <div className='flex items-center border-b-2 border-gray-200 ml-3 pb-5 h-56 justify-between'>
             <div className='flex-1 w-1/3 m-2 max-h-80 max-w-sm'>
-              <Image src='https://placehold.jp/1280x720.png' alt='Onsen Image' width={1280} height={720} />
+              {relatedOnsen?.onsen_image ? (
+                <Image src={relatedOnsen.onsen_image} alt='Onsen Image' width={1280} height={720} />
+              ) : (
+                <Image src='https://placehold.jp/1280x720.png' alt='No Image' width={1280} height={720} />
+              )}
             </div>
             <div className='flex flex-col flex-2 w-2/3 m-2 leading-8 h-full'>
               <Link href={`/onsens/${relatedOnsen?.id}`}>

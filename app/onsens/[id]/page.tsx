@@ -70,7 +70,11 @@ const ShowOnsen = () => {
       </div>
       <div className='flex'>
         <div className='flex-1 w-1/2 m-2'>
-          <Image src='https://placehold.jp/1280x720.png' alt='Onsen Image' width={1280} height={720} />
+          {onsen.onsen_image ? (
+            <Image src={onsen.onsen_image} alt='Onsen Image' width={1280} height={720} />
+          ) : (
+            <Image src='https://placehold.jp/1280x720.png' alt='No Image' width={1280} height={720} />
+          )}
         </div>
         <div className='flex-2 w-1/2 m-2 leading-8'>
           <p>{onsen.onsen_description}</p>
@@ -118,10 +122,14 @@ const ShowOnsen = () => {
           {onsen.onsen_name}周辺の施設
         </h4>
         <div>
-          {facilities.map((facility: any) => (
+          {facilities.map((facility: Facility) => (
             <div key={facility.id} className='flex items-center border-b-2 border-gray-200 ml-3 pb-5 h-56 justify-between'>
               <div className='flex-1 w-1/3 m-2 max-h-80 max-w-sm'>
-                <Image src='https://placehold.jp/1280x720.png' alt='Onsen Image' width={1280} height={720} />
+                {facility.facility_image ? (
+                  <Image src={facility.facility_image} alt='Facility Image' width={1280} height={720} />
+                ) : (
+                  <Image src='https://placehold.jp/1280x720.png' alt='No Image' width={1280} height={720} />
+                )}
               </div>
               <div className='flex-2 w-2/3 m-2 leading-8 h-full'>
                 <h4 className='font-notojp text-xl font-semibold text-gray-600 align-top my-3'>{facility.facility_name}</h4>
@@ -150,7 +158,6 @@ const ShowOnsen = () => {
                 良いお風呂でした。また行きたいです。
               </p>
             </div>
-
           </div>
         </div>
       </div>
