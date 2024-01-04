@@ -11,6 +11,7 @@ export type Facility = {
   pref: string
   address: string
   facility_description: string
+  facility_image: string
   onsen_name: string
 }
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 import { mutate } from 'swr'
 import { useForm, Controller } from 'react-hook-form'
@@ -12,15 +12,22 @@ interface CreateOnsenModalProps {
 }
 
 interface OnsenData {
+  [key: string]: string | File
   onsen_name: string
   onsen_name_kana: string
   pref: string
-  onsen_description: string
   quality: string
   effects: string
+  onsen_description: string
 }
 
 const CreateOnsenModal: React.FC<CreateOnsenModalProps> = ({ onClose, prefectures }) => {
+  const [OnsenSelectedFile, setOnsenSelectedFile] = useState(null)
+
+  const handleOnsenFileChange = (event: any) => {
+    setOnsenSelectedFile(event.target.files[0])
+  }
+
   const { register, handleSubmit, control, formState: { errors } } = useForm<OnsenData>({
     criteriaMode: 'all',
     mode: 'onBlur',
@@ -35,8 +42,23 @@ const CreateOnsenModal: React.FC<CreateOnsenModalProps> = ({ onClose, prefecture
   })
 
   const onSubmit = async (data :OnsenData) => {
+    const formData = new FormData()
+
+    // React Hook Formから得られたフォームデータを追加
+    Object.keys(data).forEach((key) => {
+      formData.append(`onsen[${key}]`, data[key])
+    })
+
+    if (OnsenSelectedFile) {
+      formData.append('onsen[onsen_image]', OnsenSelectedFile)
+    }
+
     try {
-      const response = await axios.post('http://localhost:3000/api/v1/onsens', { onsen: data });
+      const response = await axios.post('http://localhost:3000/api/v1/onsens', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
       console.log(response.data)
       onClose()
       mutate('http://localhost:3000/api/v1/onsens/all')
@@ -164,10 +186,11 @@ const CreateOnsenModal: React.FC<CreateOnsenModalProps> = ({ onClose, prefecture
               })}
             />
           </div>
-          <h4 className='font-notojp text-gray-600 font-semibold text-base mt-3'>温泉の画像を選択</h4>
+          <h4 className='font-notojp text-gray-600 font-semibold text-base mt-3'>温泉の画像を選択<span className='text-red-600'> *</span></h4>
           <div>
             <input
               type="file"
+              onChange={handleOnsenFileChange}
               className="file-input file-input-bordered file-input-ghost w-full text-gray-600 bg-white border-gray-600"
             />
           </div>
