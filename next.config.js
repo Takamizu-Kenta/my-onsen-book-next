@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['placehold.jp'],
+    domains: [
+      'placehold.jp',
+      'res.cloudinary.com'
+    ],
   },
 }
 

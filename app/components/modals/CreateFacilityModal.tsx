@@ -20,15 +20,18 @@ interface CreateFacilityModalProps {
 }
 
 interface OnsenData {
+  [key: string]: string | File
   onsen_name: string
   onsen_name_kana: string
   pref: string
   quality: string
   effects: string
   onsen_description: string
+  onsen_image: string
 }
 
 interface FacilityData {
+  [key: string]: string | File | number
   onsen_id: number
   facility_name: string
   facility_name_kana: string
@@ -37,12 +40,22 @@ interface FacilityData {
   address: string
   facility_description: string
   facility_link: string
+  facility_image: string
 }
 
 interface CombinedFormData extends OnsenData, FacilityData {}
 
 const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, prefectures, onsens, facilityTypes }) => {
-  const router = useRouter()
+  const [OnsenSelectedFile, setOnsenSelectedFile] = useState(null)
+  const [FacilitySelectedFile, setFacilitySelectedFile] = useState(null)
+
+  const handleOnsenFileChange = (event: any) => {
+    setOnsenSelectedFile(event.target.files[0])
+  }
+
+  const handleFacilityFileChange = (event: any) => {
+    setFacilitySelectedFile(event.target.files[0])
+  }
 
   const { register, handleSubmit, control, formState: { errors } } = useForm<CombinedFormData>({
     criteriaMode: 'all',
@@ -58,6 +71,29 @@ const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, pref
   })
 
   const onSubmit = async (data: CombinedFormData) => {
+    const formData = new FormData()
+
+    // React Hook Formから得られたフォームデータを追加
+    Object.keys(data).forEach((key) => {
+      formData.append(`facility[${key}]`, data[key])
+    })
+
+    formData.append('facility[onsen_id]', data.onsen_id.toString())
+
+    if (FacilitySelectedFile) {
+      formData.append('facility[facility_image]', FacilitySelectedFile)
+    }
+
+    if (!isOnsenSelected) {
+      Object.keys(data).forEach((key) => {
+        formData.append(`onsen[${key}]`, data[key])
+      })
+
+      if (OnsenSelectedFile) {
+        formData.append('onsen[onsen_image]', OnsenSelectedFile)
+      }
+    }
+
     let onsenId = data.onsen_id
 
     const onsenData: OnsenData = {
@@ -66,7 +102,8 @@ const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, pref
       pref: data.pref,
       quality: data.quality,
       effects: data.effects,
-      onsen_description: data.onsen_description
+      onsen_description: data.onsen_description,
+      onsen_image: data.onsen_image
     }
 
     const facilityData: FacilityData = {
@@ -77,15 +114,16 @@ const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, pref
       pref: data.pref,
       address: data.address,
       facility_description: data.facility_description,
-      facility_link: data.facility_link
+      facility_link: data.facility_link,
+      facility_image: data.facility_image
     }
 
     if (!isOnsenSelected) {
       try {
-        await axios.post('http://localhost:3000/api/v1/facility_registrations',
-        {
-          onsen: onsenData ,
-          facility: facilityData
+        await axios.post('http://localhost:3000/api/v1/facility_registrations', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
         })
         onClose()
       } catch (error) {
@@ -95,9 +133,10 @@ const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, pref
     } else {
       try {
         console.table(facilityData)
-        const facilityResponse = await axios.post('http://localhost:3000/api/v1/facilities', {
-          facility: facilityData,
-          onsen_id: onsenId
+        const facilityResponse = await axios.post('http://localhost:3000/api/v1/facilities', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
         })
         console.log(facilityResponse.data)
         onClose()
@@ -270,6 +309,14 @@ const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, pref
                 },
               })}
             />
+            <h4 className='font-notojp text-gray-600 font-semibold text-base my-3'>施設の画像を選択<span className='text-red-600'> *</span></h4>
+            <div>
+              <input
+                type="file"
+                onChange={handleFacilityFileChange}
+                className="file-input file-input-bordered file-input-ghost w-full text-gray-600 bg-white border-gray-600"
+              />
+            </div>
           </div>
           {!isOnsenSelected && (
             <div className='grid grid-cols-1 mt-3.5'>
@@ -386,16 +433,16 @@ const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, pref
                   })}
                 />
               </div>
+              <h4 className='font-notojp text-gray-600 font-semibold text-base my-3'>温泉の画像を選択<span className='text-red-600'> *</span></h4>
+              <div>
+                <input
+                  type="file"
+                  onChange={handleOnsenFileChange}
+                  className="file-input file-input-bordered file-input-ghost w-full text-gray-600 bg-white border-gray-600"
+                />
+              </div>
             </div>
-
           )}
-          <h4 className='font-notojp text-gray-600 font-semibold text-base mt-3'>温泉の画像を選択</h4>
-          <div>
-            <input
-              type="file"
-              className="file-input file-input-bordered file-input-ghost w-full text-gray-600 bg-white border-gray-600"
-            />
-          </div>
         </ModalBody>
         <ModalFooter>
           <div className='flex flex-col w-full'>
