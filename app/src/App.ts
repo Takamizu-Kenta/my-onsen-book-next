@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'
 
 export const useAxios = () => {
     const axiosInstance = axios.create({
@@ -7,8 +7,9 @@ export const useAxios = () => {
             'Content-Type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest'
         },
-        responseType: 'json'
-    });
+        responseType: 'json',
+        withCredentials: true
+    })
 
-    return axiosInstance;
+    return axiosInstance
 }

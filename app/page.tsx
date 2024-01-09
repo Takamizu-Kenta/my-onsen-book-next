@@ -1,11 +1,8 @@
-// app/routes/index.tsx または app/pages/index.tsx
 import React from 'react'
 import Image from 'next/image'
 import Ginzan from '../public/ginzan.jpg'
 
 export default function HomePage() {
-  // ここに必要なデータフェッチングやその他のロジックを記述
-
   return (
     <div>
       <div className="relative h-screen">
