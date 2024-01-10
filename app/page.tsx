@@ -21,7 +21,13 @@ export default function HomePage() {
         </div>
         <div className='pt-3'>
           <p className="font-notojp text-xl text-gray-600 text-center leading-relaxed px-10">
-            MyOnsenBookとは自分の行った温泉を記録し、自分だけの温泉図鑑を作ることができるサービスです。<br />自分で作成した図鑑を他の人と共有し自分の温泉体験を共有し合うことも、自分がまだ知らない温泉に出会うことも可能です。<br />場所から、泉質から、宿から、自分にあった温泉を探す旅を今すぐ始めましょう。
+            MyOnsenBookとは自分の行った温泉を記録し、自分だけの温泉図鑑を作ることができるサービスです。<br />自分で作成した図鑑を他の人と共有し自分の温泉体験を共有し合うことも、自分がまだ知らない温泉に出会うことも可能です。
+          </p>
+          <p className="font-notojp text-xl text-gray-600 text-center leading-relaxed px-10 py-5">
+            もし自分が行った温泉が登録されていなかったら、ぜひ積極的に登録してみてください。<br />あなたが登録した温泉が、誰かの温泉図鑑をより充足させるきっかけになります。
+          </p>
+          <p className="font-notojp text-xl text-gray-600 text-center leading-relaxed px-10 py-5">
+            場所から、泉質から、宿から、自分にあった温泉を探す旅を今すぐ始めましょう。<br />※都道府県・泉質検索は近日実装予定
           </p>
         </div>
       </div>

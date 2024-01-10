@@ -69,28 +69,6 @@ const AllFacilities = () => {
           </Modal>
         </div>
       </div>
-      <div className='ml-3 flex flex-row items-center w-full'>
-        <Input
-          classNames={{
-            base: "h-12 mb-3",
-            mainWrapper: "h-full w-96",
-            input: "text-md",
-            inputWrapper: "h-full w-full font-normal text-default-500 bg-default-300/20",
-          }}
-          placeholder="施設名を入力してください"
-          size="sm"
-          // startContent={<SearchIcon size={18} />}
-          type="search"
-        />
-        <PrefectureSelect
-          isRequired={false}
-          label="都道府県から選ぶ"
-          placeholder="都道府県を選択してください"
-          prefectures={prefectures}
-          variant="flat"
-          className="max-w-xs mb-3 mr-3"
-        />
-      </div>
       <div className="flex flex-col w-full items-center">
         <div className="grid grid-cols-1 justify-center w-full">
           {facilities.map((facility: Facility) => (

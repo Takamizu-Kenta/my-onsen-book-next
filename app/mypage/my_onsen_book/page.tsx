@@ -37,7 +37,7 @@ const MyOnsens = () => {
           <p className="font-notojp text-xl text-gray-600">あなたが追加した温泉一覧です。気になる温泉/訪れた温泉を追加してあなただけのOnsenBookを作成しよう！</p>
         </div>
       </div>
-      <div className='ml-3 flex flex-row items-center w-full'>
+      <div className='ml-3 flex flex-row items-start w-full'>
         <OnsenSearchForm prefectures={prefectures} url="http://localhost:3000/api/v1/onsens/my_onsen_book" />
       </div>
       <div className="flex flex-col w-full items-center">

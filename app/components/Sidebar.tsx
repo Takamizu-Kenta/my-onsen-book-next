@@ -60,18 +60,19 @@ const Sidebar = () => {
               <Image src={sidebarIcon} alt="Right Arrow" width={9} height={9} />
             </li>
             <li className="mt-10 text-xl flex justify-between items-center">
-              <p className="pb-0.5 pr-5">施設データベース</p>
+              <Link href="/facilities">
+                <p className="pb-0.5 pr-5">施設データベース</p>
+              </Link>
               <Image src={sidebarIcon} alt="Right Arrow" width={9} height={9} />
             </li>
-            <li className="mt-10 text-xl flex justify-between items-center">
-              <p className="pb-0.5 pr-5">泉質から温泉を探す</p>
-              <Image src={sidebarIcon} alt="Right Arrow" width={9} height={9} />
-            </li>
-            <li className="mt-10 text-xl flex justify-between items-center">
-              <p className="pb-0.5 pr-5"> 宿から温泉を探す</p>
-              <Image src={sidebarIcon} alt="Right Arrow" width={9} height={9} />
-            </li>
-
+            {currentUser && (
+              <li className="mt-10 text-xl flex justify-between items-center">
+                <Link href="/mypage/my_onsen_book">
+                  <p className="pb-0.5 pr-5">MyOnsenBookを見る</p>
+                </Link>
+                <Image src={sidebarIcon} alt="Right Arrow" width={9} height={9} />
+              </li>
+            )}
           </ul>
         </div>
         {currentUser ? (
