@@ -61,7 +61,7 @@ const AllOnsens = () => {
           </Modal>
         </div>
       </div>
-      <div className='ml-3 flex flex-row items-center w-full'>
+      <div className='ml-3 flex flex-row items-start w-full'>
         <OnsenSearchForm prefectures={prefectures} url="http://localhost:3000/api/v1/onsens/all" />
       </div>
       <div className="flex flex-col w-full items-center">

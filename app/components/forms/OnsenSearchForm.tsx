@@ -7,7 +7,7 @@ import PrefectureSelect from "../selects/PrefectureSelect"
 import { Prefecture } from "@/app/src/types/prefecture"
 import { onsensAtomFamily } from "@/app/atoms/onsens"
 import { useSetRecoilState } from "recoil"
-import { Controller, FormProvider, SubmitHandler, useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { Onsen } from "@/app/src/types/onsen"
 
 interface Props {
@@ -24,6 +24,9 @@ export default function OnsenSearchForm({ prefectures, url }: Props) {
     },
   })
 
+  const watchedName = methods.watch("name")
+  const watchedPrefectureId = methods.watch("prefecture_id")
+
   useEffect(() => {
     const debounce = setTimeout(async () => {
       const data = await axios.post<Onsen[]>(url, {
@@ -33,26 +36,28 @@ export default function OnsenSearchForm({ prefectures, url }: Props) {
           Accept: "application/json",
         }
       }, { withCredentials: true }).then(res => res.data)
+
       console.log(JSON.stringify(methods.getValues()))
       setOnsens(data)
     }, 500)
 
     return () => clearTimeout(debounce)
-  }, [methods.watch("name"), methods.watch("prefecture_id")])
+  }, [watchedName, watchedPrefectureId, methods, setOnsens, url])
 
   return (
     <>
       <Input
         classNames={{
-          base: "h-12 mb-3",
+          base: "h-14 mb-3 w-96 mr-3",
           mainWrapper: "h-full w-96",
           input: "text-md",
-          inputWrapper: "h-full w-full font-normal text-default-500 bg-default-300/20",
+          inputWrapper: "h-full font-normal text-default-500",
         }}
         placeholder="温泉名を入力してください"
         size="sm"
         // startContent={<SearchIcon size={18} />}
         type="search"
+        variant="underlined"
         {...methods.register("name")}
       />
       <Controller
@@ -65,8 +70,8 @@ export default function OnsenSearchForm({ prefectures, url }: Props) {
             label="都道府県"
             placeholder="都道府県を選択してください"
             prefectures={prefectures}
-            variant="bordered"
-            className="w-full"
+            variant="underlined"
+            className="w-96 items-start"
           />
         )}
       />
