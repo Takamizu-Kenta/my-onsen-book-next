@@ -12,9 +12,8 @@ import PrefectureSelect from '../../components/selects/PrefectureSelect'
 import CreateOnsenModal from '@/app/components/modals/CreateOnsenModal'
 
 const AllOnsens = () => {
-  const { data: onsens, error: onsensError } = useSWR('http://localhost:3000/api/v1/onsens/all', (url) => axios.get(url).then(res => res.data))
-  const { data: prefectures, error: prefecturesError } = useSWR('http://localhost:3000/api/v1/prefectures', (url) => axios.get(url).then(res => res.data))
-
+  const { data: onsens, error: onsensError } = useSWR('http://localhost:3000/api/v1/onsens/all', (url) => axios.get(url, { withCredentials: true }).then(res => res.data))
+  const { data: prefectures, error: prefecturesError } = useSWR('http://localhost:3000/api/v1/prefectures', (url) => axios.get(url, { withCredentials: true }).then(res => res.data))
 
   const [isOpen, setIsOpen] = useState(false)
   const onOpenChange = (newOpenValue: boolean) => {
@@ -22,7 +21,7 @@ const AllOnsens = () => {
   }
 
   const onOpen = () => {
-    setIsOpen(true);
+    setIsOpen(true)
   }
 
   if (onsensError || prefecturesError) {
@@ -85,7 +84,7 @@ const AllOnsens = () => {
       <div className="flex flex-col w-full items-center">
         <div className="grid grid-cols-1 justify-center w-full">
           {onsens.map((onsen: Onsen) => (
-            <Card  key={onsen.id} className="py-4 m-2 w-full" shadow="none">
+            <Card key={onsen.id} className="py-4 m-2 w-full" shadow="none">
               <CardHeader className="pb-2 pt-1 px-4 flex flex-col items-start border-b-2">
                 <div className="flex items-end mb-2">
                   <p className="text-sm font-bold">{onsen.pref}</p>
@@ -101,14 +100,14 @@ const AllOnsens = () => {
                 <small className="text-default-500">{onsen.quality}</small>
                 <p className="text-default-500 text-sm overflow-hidden line-clamp-2">{onsen.onsen_description}</p>
                 <Link href={`/onsens/${onsen.id}`}>
-                  <p className=" text-sm mt-6 mr-5 ml-auto text-emerald-600">もっとみる→</p>
+                  <p className=" text-sm mt-6 mr-5 text-right text-emerald-600">もっとみる→</p>
                 </Link>
               </CardBody>
             </Card>
           ))}
         </div>
         <div className="flex w-full justify-end">
-            {/* ページネーション？ */}
+          {/* ページネーション？ */}
         </div>
       </div>
     </div>
