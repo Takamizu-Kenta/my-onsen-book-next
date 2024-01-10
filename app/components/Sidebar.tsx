@@ -3,7 +3,6 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useSelector } from 'react-redux'
 import sidebarIcon from './icons/arrow_right_white.png'
 import { Button } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
@@ -38,7 +37,6 @@ const Sidebar = () => {
         {currentUser ? (
           <div className="font-notojp flex text-white border-gray-200 mt-10 mb-20 text-xl">
             <p>ようこそ {currentUser.name} さん</p>
-            {/* ログアウトボタンなど */}
           </div>
         ) : (
           <div className="font-notojp flex text-white border-gray-200 mt-10 mb-20 text-xl">
@@ -62,7 +60,7 @@ const Sidebar = () => {
               <Image src={sidebarIcon} alt="Right Arrow" width={9} height={9} />
             </li>
             <li className="mt-10 text-xl flex justify-between items-center">
-              <p className="pb-0.5 pr-5">場所から温泉を探す</p>
+              <p className="pb-0.5 pr-5">施設データベース</p>
               <Image src={sidebarIcon} alt="Right Arrow" width={9} height={9} />
             </li>
             <li className="mt-10 text-xl flex justify-between items-center">
@@ -81,10 +79,9 @@ const Sidebar = () => {
             className="mt-40 w-64 h-12 font-semibold border font-notojp border-white text-white hover:bg-white hover:text-black hover:border-theme"
             variant="bordered"
             radius="sm"
+            onClick={handleSignOut}
           >
-            <button onClick={handleSignOut}>
-              ログアウト
-            </button>
+            ログアウト
           </Button>
         ) : (
           <Button
@@ -106,4 +103,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default Sidebar
