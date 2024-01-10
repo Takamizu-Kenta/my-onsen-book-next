@@ -5,7 +5,8 @@ import axios from 'axios'
 import useSWR from 'swr'
 import { Onsen } from '../../src/types/onsen'
 import { Prefecture } from '../../src/types/prefecture'
-import { Modal, ModalContent, Button, Input, Link, Spinner } from "@nextui-org/react"
+import Link from 'next/link'
+import { Modal, ModalContent, Button, Input, Spinner } from "@nextui-org/react"
 import { Card, CardHeader, CardBody } from "@nextui-org/react"
 import PrefectureSelect from '../../components/selects/PrefectureSelect'
 import CreateOnsenModal from '@/app/components/modals/CreateOnsenModal'
