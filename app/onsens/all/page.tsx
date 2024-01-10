@@ -10,26 +10,29 @@ import { Modal, ModalContent, Button, Input, Spinner } from "@nextui-org/react"
 import { Card, CardHeader, CardBody } from "@nextui-org/react"
 import PrefectureSelect from '../../components/selects/PrefectureSelect'
 import CreateOnsenModal from '@/app/components/modals/CreateOnsenModal'
+import OnsenSearchForm from '@/app/components/forms/OnsenSearchForm'
+import { onsensAtomFamily } from '@/app/atoms/onsens'
+import { useRecoilValue } from 'recoil'
 
 const AllOnsens = () => {
-  const { data: onsens, error: onsensError } = useSWR('http://localhost:3000/api/v1/onsens/all', (url) => axios.get(url, { withCredentials: true }).then(res => res.data))
+  const onsens = useRecoilValue(onsensAtomFamily("http://localhost:3000/api/v1/onsens/all"))
   const { data: prefectures, error: prefecturesError } = useSWR('http://localhost:3000/api/v1/prefectures', (url) => axios.get(url, { withCredentials: true }).then(res => res.data))
 
   const [isOpen, setIsOpen] = useState(false)
   const onOpenChange = (newOpenValue: boolean) => {
-    setIsOpen(newOpenValue);
+    setIsOpen(newOpenValue)
   }
 
   const onOpen = () => {
     setIsOpen(true)
   }
 
-  if (onsensError || prefecturesError) {
-    console.error(onsensError || prefecturesError)
+  if (prefecturesError) {
+    console.error(prefecturesError)
     return <div>データの読み込みに失敗しました。</div>
   }
 
-  if (!onsens || !prefectures) {
+  if (!prefectures) {
     return <div className='h-full w-full flex justify-center'><Spinner size="lg" className='align-center justify-center' color='success' /></div>
   }
 
@@ -56,30 +59,10 @@ const AllOnsens = () => {
               {(onClose) => <CreateOnsenModal onClose={onClose} prefectures={prefectures} />}
             </ModalContent>
           </Modal>
-
         </div>
       </div>
-      <div className='ml-3 flex flex-row items-center w-full'>
-        <Input
-          classNames={{
-            base: "h-12 mb-3",
-            mainWrapper: "h-full w-96",
-            input: "text-md",
-            inputWrapper: "h-full w-full font-normal text-default-500 bg-default-300/20",
-          }}
-          placeholder="温泉名を入力してください"
-          size="sm"
-          // startContent={<SearchIcon size={18} />}
-          type="search"
-        />
-        <PrefectureSelect
-          isRequired={false}
-          label="都道府県から選ぶ"
-          placeholder="都道府県を選択してください"
-          prefectures={prefectures}
-          variant="flat"
-          className="max-w-xs mb-3 mr-3"
-        />
+      <div className='ml-3 flex flex-row items-start w-full'>
+        <OnsenSearchForm prefectures={prefectures} url="http://localhost:3000/api/v1/onsens/all" />
       </div>
       <div className="flex flex-col w-full items-center">
         <div className="grid grid-cols-1 justify-center w-full">

@@ -11,6 +11,7 @@ import PrefectureSelect from '../selects/PrefectureSelect'
 import OnsenSelect from '../selects/OnsenSelect'
 import FacilityTypeSelect from '../selects/FacilityTypeSelect'
 import { ModalHeader, ModalBody, ModalFooter, Button, Input, Checkbox, Textarea, Select } from "@nextui-org/react"
+import { toast } from 'react-toastify'
 
 interface CreateFacilityModalProps {
   onClose: () => void
@@ -28,6 +29,7 @@ interface OnsenData {
   effects: string
   onsen_description: string
   onsen_image: string
+  add_my_onsen_book: string
 }
 
 interface FacilityData {
@@ -43,7 +45,7 @@ interface FacilityData {
   facility_image: string
 }
 
-interface CombinedFormData extends OnsenData, FacilityData {}
+interface CombinedFormData extends OnsenData, FacilityData { }
 
 const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, prefectures, onsens, facilityTypes }) => {
   const [OnsenSelectedFile, setOnsenSelectedFile] = useState(null)
@@ -57,7 +59,7 @@ const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, pref
     setFacilitySelectedFile(event.target.files[0])
   }
 
-  const { register, handleSubmit, control, formState: { errors } } = useForm<CombinedFormData>({
+  const { watch, register, handleSubmit, control, setValue, formState: { errors } } = useForm<CombinedFormData>({
     criteriaMode: 'all',
     mode: 'onBlur',
     defaultValues: {
@@ -66,7 +68,8 @@ const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, pref
       pref: '',
       quality: '',
       effects: '',
-      onsen_description: ''
+      onsen_description: '',
+      add_my_onsen_book: "false",
     }
   })
 
@@ -103,7 +106,8 @@ const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, pref
       quality: data.quality,
       effects: data.effects,
       onsen_description: data.onsen_description,
-      onsen_image: data.onsen_image
+      onsen_image: data.onsen_image,
+      add_my_onsen_book: "false"
     }
 
     const facilityData: FacilityData = {
@@ -123,9 +127,11 @@ const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, pref
         await axios.post('http://localhost:3000/api/v1/facility_registrations', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
-          }
+          },
+          withCredentials: true
         })
         onClose()
+        toast.success('登録が完了しました。')
       } catch (error) {
         console.error(error)
         alert('温泉･施設登録リクエストに失敗しました。データの重複等がないかを確認してください。')
@@ -140,6 +146,7 @@ const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, pref
         })
         console.log(facilityResponse.data)
         onClose()
+        toast.success('登録が完了しました。')
       } catch (error) {
         console.error(error)
         alert('施設登録リクエストに失敗しました。データの重複等がないかを確認してください。')
@@ -449,6 +456,10 @@ const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, pref
               classNames={{
                 label: "text-base font-notojp text-gray-600",
               }}
+              {...register("add_my_onsen_book")}
+              onValueChange={(value) => {
+                setValue("add_my_onsen_book", value.toString())
+              }}
             >
               MyOnsenBookにも追加する
             </Checkbox>
@@ -463,7 +474,7 @@ const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, pref
         </ModalFooter>
       </form>
       <div>
-    </div>
+      </div>
     </>
   )
 }

@@ -5,6 +5,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { Prefecture } from '../../src/types/prefecture'
 import PrefectureSelect from '../selects/PrefectureSelect'
 import { ModalHeader, ModalBody, ModalFooter, Button, Input, Checkbox, Textarea } from "@nextui-org/react"
+import { toast } from 'react-toastify'
 
 interface CreateOnsenModalProps {
   onClose: () => void
@@ -19,6 +20,7 @@ interface OnsenData {
   quality: string
   effects: string
   onsen_description: string
+  add_my_onsen_book: string
 }
 
 const CreateOnsenModal: React.FC<CreateOnsenModalProps> = ({ onClose, prefectures }) => {
@@ -28,7 +30,7 @@ const CreateOnsenModal: React.FC<CreateOnsenModalProps> = ({ onClose, prefecture
     setOnsenSelectedFile(event.target.files[0])
   }
 
-  const { register, handleSubmit, control, formState: { errors } } = useForm<OnsenData>({
+  const { register, handleSubmit, setValue, control, formState: { errors } } = useForm<OnsenData>({
     criteriaMode: 'all',
     mode: 'onBlur',
     defaultValues: {
@@ -37,11 +39,12 @@ const CreateOnsenModal: React.FC<CreateOnsenModalProps> = ({ onClose, prefecture
       pref: '',
       quality: '',
       effects: '',
-      onsen_description: ''
+      onsen_description: '',
+      add_my_onsen_book: "false"
     }
   })
 
-  const onSubmit = async (data :OnsenData) => {
+  const onSubmit = async (data: OnsenData) => {
     const formData = new FormData()
 
     // React Hook Formから得られたフォームデータを追加
@@ -57,10 +60,11 @@ const CreateOnsenModal: React.FC<CreateOnsenModalProps> = ({ onClose, prefecture
       const response = await axios.post('http://localhost:3000/api/v1/onsens', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
-        }
+        },
+        withCredentials: true
       })
-      console.log(response.data)
       onClose()
+      toast.success('登録が完了しました。')
       mutate('http://localhost:3000/api/v1/onsens/all')
     } catch (error) {
       console.error(error)
@@ -201,6 +205,10 @@ const CreateOnsenModal: React.FC<CreateOnsenModalProps> = ({ onClose, prefecture
               classNames={{
                 label: "text-base font-notojp text-gray-600",
               }}
+              {...register("add_my_onsen_book")}
+              onValueChange={(value) => {
+                setValue("add_my_onsen_book", value.toString())
+              }}
             >
               MyOnsenBookにも追加する
             </Checkbox>
@@ -215,7 +223,7 @@ const CreateOnsenModal: React.FC<CreateOnsenModalProps> = ({ onClose, prefecture
         </ModalFooter>
       </form>
       <div>
-    </div>
+      </div>
     </>
   )
 }

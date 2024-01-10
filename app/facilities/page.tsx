@@ -1,16 +1,17 @@
 "use client"
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import useSWR from 'swr'
 import { Facility } from '../src/types/facility'
+import { Onsen } from '../src/types/onsen'
 import { Modal, ModalContent, Button, Input, Link, Spinner } from "@nextui-org/react"
 import { Card, CardHeader, CardBody } from "@nextui-org/react"
 import PrefectureSelect from '../components/selects/PrefectureSelect'
 import CreateFacilityModal from '../components/modals/CreateFacilityModal'
 
 const AllFacilities = () => {
-  const { data: onsens, error: onsensError } = useSWR('http://localhost:3000/api/v1/onsens/all', (url) => axios.get(url).then(res => res.data))
+  const [onsens, setOnsens] = useState<Onsen[]>([])
   const { data: prefectures, error: prefecturesError } = useSWR('http://localhost:3000/api/v1/prefectures', (url) => axios.get(url).then(res => res.data))
   const { data: facilityTypes, error: facilityTypesError } = useSWR('http://localhost:3000/api/v1/facility_types', (url) => axios.get(url).then(res => res.data))
   const { data: facilities, error: facilitiesError } = useSWR('http://localhost:3000/api/v1/facilities', (url) => axios.get(url).then(res => res.data))
@@ -24,8 +25,18 @@ const AllFacilities = () => {
     setIsOpen(true)
   }
 
-  if (onsensError || prefecturesError || facilityTypesError || facilitiesError) {
-    console.error(onsensError || prefecturesError || facilityTypesError || facilitiesError)
+  useEffect(() => {
+    axios.post<Onsen[]>('http://localhost:3000/api/v1/onsens/all', {
+      body: {},
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      }
+    }, { withCredentials: true }).then(res => setOnsens(res.data))
+  }, [])
+
+  if (prefecturesError || facilityTypesError || facilitiesError) {
+    console.error(prefecturesError || facilityTypesError || facilitiesError)
     return <div>データの読み込みに失敗しました。</div>
   }
 
@@ -57,28 +68,6 @@ const AllFacilities = () => {
             </ModalContent>
           </Modal>
         </div>
-      </div>
-      <div className='ml-3 flex flex-row items-center w-full'>
-        <Input
-          classNames={{
-            base: "h-12 mb-3",
-            mainWrapper: "h-full w-96",
-            input: "text-md",
-            inputWrapper: "h-full w-full font-normal text-default-500 bg-default-300/20",
-          }}
-          placeholder="施設名を入力してください"
-          size="sm"
-          // startContent={<SearchIcon size={18} />}
-          type="search"
-        />
-        <PrefectureSelect
-          isRequired={false}
-          label="都道府県から選ぶ"
-          placeholder="都道府県を選択してください"
-          prefectures={prefectures}
-          variant="flat"
-          className="max-w-xs mb-3 mr-3"
-        />
       </div>
       <div className="flex flex-col w-full items-center">
         <div className="grid grid-cols-1 justify-center w-full">
