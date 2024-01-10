@@ -10,5 +10,6 @@ export type Onsen = {
   onsen_area_name: string
   onsen_description: string
   onsen_image: string
+  is_owner?: boolean
 }
 
