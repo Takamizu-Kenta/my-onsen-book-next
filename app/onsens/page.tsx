@@ -5,7 +5,7 @@ import axios from 'axios'
 import Link from 'next/link'
 import { Onsen } from '../src/types/onsen'
 import { Input } from "@nextui-org/react"
-import  {Card, CardHeader, CardBody } from "@nextui-org/react"
+import  { Card, CardHeader, CardBody } from "@nextui-org/react"
 import { Button } from "@nextui-org/react"
 
 const Onsens = () => {
