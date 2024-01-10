@@ -1,24 +1,27 @@
 "use client"
 
 import { useEffect, useState, useCallback } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import axios from 'axios'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Onsen } from '../../src/types/onsen'
 import { Facility } from '../../src/types/facility'
 import { Button, Spinner } from "@nextui-org/react"
+import MyOnsenBookBtn from '../../components/buttons/MyOnsenBookBtn'
 
 const ShowOnsen = () => {
   const [onsen, setOnsen] = useState<Onsen | null>(null)
   const [facilities, setFacilities] = useState<Facility[]>([])
+
+  const router = useRouter()
 
   const params = useParams()
   const id = params.id
 
   const fetchOnsen = useCallback(async () => {
     try {
-      const res = await axios.get<Onsen>(`http://localhost:3000/api/v1/onsens/${id}`)
+      const res = await axios.get<Onsen>(`http://localhost:3000/api/v1/onsens/${id}`, { withCredentials: true })
 
       setOnsen(res.data)
     } catch (err) {
@@ -28,7 +31,7 @@ const ShowOnsen = () => {
 
   const fetchFacilities = async () => {
     try {
-      const res = await axios.get<Facility[]>(`http://localhost:3000/api/v1/facilities`)
+      const res = await axios.get<Facility[]>(`http://localhost:3000/api/v1/facilities`, { withCredentials: true })
 
       setFacilities(res.data)
     } catch (err) {
@@ -50,11 +53,9 @@ const ShowOnsen = () => {
   return (
     <div className='bg-slate-100 h-screen p-8'>
       <div>{/* 一覧に戻る、お気に入り */}
-        <Link href="/onsens/all">
-          <Button className="mt-2 w-40 mr-6 mb-7" color="success" variant="bordered">
-            一覧に戻る
-          </Button>
-        </Link>
+        <Button className="mt-2 w-40 mr-6 mb-7" color="success" variant="bordered" onClick={router.back}>
+          一覧に戻る
+        </Button>
       </div>
       <div className='flex items-baseline border-b-3 border-emerald-600 my-6'>
         <h1 className='font-notojp text-4xl font-semibold text-gray-600 mb-4 mr-5'>{onsen.onsen_name}</h1>
@@ -63,9 +64,7 @@ const ShowOnsen = () => {
           <Button className="w-40 mr-5" color="success" variant="bordered">
             この温泉に行きたい！
           </Button>
-          <Button className="w-40" color="success" variant="bordered">
-            お気に入り登録する
-          </Button>
+          <MyOnsenBookBtn color="success" marked={onsen.is_owner || false}></MyOnsenBookBtn>
         </div>
       </div>
       <div className='flex'>
