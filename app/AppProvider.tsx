@@ -9,7 +9,7 @@ import { currentUserAtom } from "./atoms/currentUser";
 
 export default function AppProvider({ children }: {children: React.ReactNode}) {
   const router = useRouter()
-  const [currentUser, setCurrentUser] = useRecoilState(currentUserAtom)
+  const [,setCurrentUser] = useRecoilState(currentUserAtom)
 
   useEffect(() => {
     const getUserData = () => {
