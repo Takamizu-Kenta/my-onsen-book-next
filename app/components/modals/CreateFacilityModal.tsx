@@ -11,6 +11,7 @@ import PrefectureSelect from '../selects/PrefectureSelect'
 import OnsenSelect from '../selects/OnsenSelect'
 import FacilityTypeSelect from '../selects/FacilityTypeSelect'
 import { ModalHeader, ModalBody, ModalFooter, Button, Input, Checkbox, Textarea, Select } from "@nextui-org/react"
+import { toast } from 'react-toastify'
 
 interface CreateFacilityModalProps {
   onClose: () => void
@@ -130,6 +131,7 @@ const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, pref
           withCredentials: true
         })
         onClose()
+        toast.success('登録が完了しました。')
       } catch (error) {
         console.error(error)
         alert('温泉･施設登録リクエストに失敗しました。データの重複等がないかを確認してください。')
@@ -144,6 +146,7 @@ const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, pref
         })
         console.log(facilityResponse.data)
         onClose()
+        toast.success('登録が完了しました。')
       } catch (error) {
         console.error(error)
         alert('施設登録リクエストに失敗しました。データの重複等がないかを確認してください。')

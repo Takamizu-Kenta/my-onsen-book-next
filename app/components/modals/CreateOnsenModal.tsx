@@ -5,6 +5,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { Prefecture } from '../../src/types/prefecture'
 import PrefectureSelect from '../selects/PrefectureSelect'
 import { ModalHeader, ModalBody, ModalFooter, Button, Input, Checkbox, Textarea } from "@nextui-org/react"
+import { toast } from 'react-toastify'
 
 interface CreateOnsenModalProps {
   onClose: () => void
@@ -62,8 +63,8 @@ const CreateOnsenModal: React.FC<CreateOnsenModalProps> = ({ onClose, prefecture
         },
         withCredentials: true
       })
-      console.log(response.data)
       onClose()
+      toast.success('登録が完了しました。')
       mutate('http://localhost:3000/api/v1/onsens/all')
     } catch (error) {
       console.error(error)
