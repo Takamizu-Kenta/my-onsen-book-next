@@ -1,12 +1,11 @@
 "use client"
 
 import './globals.css'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { notojp } from "./utils/fonts";
 import Sidebar from './components/Sidebar'
-import { Provider, useDispatch } from 'react-redux'
-import store from './src/redux/store'
-import axios from 'axios';
+import { RecoilRoot } from 'recoil'
+import AppProvider from './AppProvider'
 
 // export const metadata: Metadata = {
 //   title: 'Create Next App',
@@ -18,38 +17,20 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const [userData, setUserData] = useState<any | null>(null)
-
-  useEffect(() => {
-    const getUserData = (): any => {
-      axios.get("http://localhost:3000/api/v1/current/user", { withCredentials: true })
-        .then((response) => {
-          const { data } = response
-          console.log(data)
-          return data
-        })
-        .catch((error) => {
-          console.log(error)
-          return null
-        })
-    }
-
-    const userData = getUserData()
-    setUserData(userData)
-  }, [])
-
   return (
-    <Provider store={store}>
+    <RecoilRoot>
       <html lang="ja-JP" className={`${notojp.variable}`}>
         <body>
-          <div className="h-screen w-screen flex">
-            <div className="w-96"><Sidebar userData={userData} /></div>
-            <div className="flex-1 overflow-auto bg-slate-100 h-screen">
-              {children}
+          <AppProvider>
+            <div className="h-screen w-screen flex">
+              <div className="w-96"><Sidebar /></div>
+              <div className="flex-1 overflow-auto bg-slate-100 h-screen">
+                {children}
+              </div>
             </div>
-          </div>
+          </AppProvider>
         </body>
       </html>
-    </Provider>
+    </RecoilRoot>
   )
 }

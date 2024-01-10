@@ -3,17 +3,17 @@
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-import { useDispatch ,useSelector } from 'react-redux'
 import { Input, Button } from '@nextui-org/react'
 import { EyeFilledIcon } from '../components/icons/EyeFilledIcon'
 import { EyeSlashFilledIcon } from '../components/icons/EyeSlashFilledIcon'
 
-import { verifyUserData } from '../src/apis/signIn'
 import axios from 'axios'
+import { currentUserAtom } from '../atoms/currentUser'
+import { useRecoilState } from 'recoil'
 
 const SignInPage = () => {
-  const dispatch = useDispatch()
   const router = useRouter()
+  const [currentUser, setCurrentUser] = useRecoilState(currentUserAtom)
   const { register, handleSubmit, formState: { errors } } = useForm({
     criteriaMode: 'all',
     mode: 'onBlur',
@@ -21,19 +21,11 @@ const SignInPage = () => {
   })
 
   const sendSignInRequest = async (params :any) => {
-    // const { data, status } = await axios.post("http://localhost:3000/api/v1/auth/sign_in", params, { withCredentials: true })
-
-    const res = await fetch("http://localhost:3000/api/v1/auth/sign_in", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(params),
-      credentials: "include",
-    })
+    const res = await axios.post("http://localhost:3000/api/v1/auth/sign_in", params, { withCredentials: true })
 
     if (res.status === 200) {
-      const data = await res.json()
+      const data = res.data.data
+      setCurrentUser(data)
       console.log(data)
       router.push('/')
     } else {
