@@ -211,7 +211,6 @@ const CreateFacilityModal: React.FC<CreateFacilityModalProps> = ({ onClose, pref
                   isInvalid={!!errors.facility_type_id}
                   className="w-full"
                 />
-                // ここを追加するところから
               )}
             />
             <Controller
