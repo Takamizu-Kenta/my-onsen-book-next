@@ -2,37 +2,17 @@
 
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import useSWR from 'swr'
 import { Onsen } from '../../src/types/onsen'
 import { Prefecture } from '../../src/types/prefecture'
 import Link from 'next/link'
-import { Modal, ModalContent, Button, Input, Spinner } from "@nextui-org/react"
 import { Card, CardHeader, CardBody } from "@nextui-org/react"
-import PrefectureSelect from '../../components/selects/PrefectureSelect'
-import CreateOnsenModal from '@/app/components/modals/CreateOnsenModal'
+import OnsenSearchForm from '@/app/components/forms/OnsenSearchForm'
+import { onsensAtomFamily } from '@/app/atoms/onsens'
+import { useRecoilValue } from 'recoil'
 
 const MyOnsens = () => {
-  const [myOnsens, setMyOnsens] = useState<Onsen[]>([])
+  const myOnsens = useRecoilValue(onsensAtomFamily("http://localhost:3000/api/v1/onsens/my_onsen_book"))
   const [prefectures, setPrefectures] = useState<Prefecture[]>([])
-
-  const fetchMyOnsens = async () => {
-    try {
-      const res = await axios.get<Onsen[]>(
-        `http://localhost:3000/api/v1/onsens/my_onsen_book`,
-        { withCredentials: true }
-      )
-
-      setMyOnsens(res.data)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  useEffect(() => {
-    fetchMyOnsens(),
-    fetchPrefectures()
-  }
-  , [])
 
   const fetchPrefectures = async () => {
     try {
@@ -44,9 +24,10 @@ const MyOnsens = () => {
     }
   }
 
-  if (!myOnsens || !prefectures) {
-    return <div className='h-full w-full flex justify-center'><Spinner size="lg" className='align-center justify-center' color='success' /></div>
+  useEffect(() => {
+    fetchPrefectures()
   }
+  , [])
 
   return (
     <div className='p-8'>
@@ -57,31 +38,12 @@ const MyOnsens = () => {
         </div>
       </div>
       <div className='ml-3 flex flex-row items-center w-full'>
-        <Input
-          classNames={{
-            base: "h-12 mb-3",
-            mainWrapper: "h-full w-96",
-            input: "text-md",
-            inputWrapper: "h-full w-full font-normal text-default-500 bg-default-300/20",
-          }}
-          placeholder="温泉名を入力してください"
-          size="sm"
-          // startContent={<SearchIcon size={18} />}
-          type="search"
-        />
-        <PrefectureSelect
-          isRequired={false}
-          label="都道府県から選ぶ"
-          placeholder="都道府県を選択してください"
-          prefectures={prefectures}
-          variant="flat"
-          className="max-w-xs mb-3 mr-3"
-        />
+        <OnsenSearchForm prefectures={prefectures} url="http://localhost:3000/api/v1/onsens/my_onsen_book" />
       </div>
       <div className="flex flex-col w-full items-center">
         <div className="grid grid-cols-1 justify-center w-full">
           {myOnsens.map((MyOnsen: Onsen) => (
-            <Card  key={MyOnsen.id} className="py-4 m-2 w-full" shadow="none">
+            <Card key={MyOnsen.id} className="py-4 m-2 w-full" shadow="none">
               <CardHeader className="pb-2 pt-1 px-4 flex flex-col items-start border-b-2">
                 <div className="flex items-end mb-2">
                   <p className="text-sm font-bold">{MyOnsen.pref}</p>
@@ -104,7 +66,7 @@ const MyOnsens = () => {
           ))}
         </div>
         <div className="flex w-full justify-end">
-            {/* ページネーション？ */}
+          {/* ページネーション？ */}
         </div>
       </div>
     </div>

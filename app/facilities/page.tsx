@@ -1,16 +1,17 @@
 "use client"
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import useSWR from 'swr'
 import { Facility } from '../src/types/facility'
+import { Onsen } from '../src/types/onsen'
 import { Modal, ModalContent, Button, Input, Link, Spinner } from "@nextui-org/react"
 import { Card, CardHeader, CardBody } from "@nextui-org/react"
 import PrefectureSelect from '../components/selects/PrefectureSelect'
 import CreateFacilityModal from '../components/modals/CreateFacilityModal'
 
 const AllFacilities = () => {
-  const { data: onsens, error: onsensError } = useSWR('http://localhost:3000/api/v1/onsens/all', (url) => axios.get(url).then(res => res.data))
+  const [onsens, setOnsens] = useState<Onsen[]>([])
   const { data: prefectures, error: prefecturesError } = useSWR('http://localhost:3000/api/v1/prefectures', (url) => axios.get(url).then(res => res.data))
   const { data: facilityTypes, error: facilityTypesError } = useSWR('http://localhost:3000/api/v1/facility_types', (url) => axios.get(url).then(res => res.data))
   const { data: facilities, error: facilitiesError } = useSWR('http://localhost:3000/api/v1/facilities', (url) => axios.get(url).then(res => res.data))
@@ -24,8 +25,18 @@ const AllFacilities = () => {
     setIsOpen(true)
   }
 
-  if (onsensError || prefecturesError || facilityTypesError || facilitiesError) {
-    console.error(onsensError || prefecturesError || facilityTypesError || facilitiesError)
+  useEffect(() => {
+    axios.post<Onsen[]>('http://localhost:3000/api/v1/onsens/all', {
+      body: {},
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      }
+    }, { withCredentials: true }).then(res => setOnsens(res.data))
+  }, [])
+
+  if (prefecturesError || facilityTypesError || facilitiesError) {
+    console.error(prefecturesError || facilityTypesError || facilitiesError)
     return <div>データの読み込みに失敗しました。</div>
   }
 
