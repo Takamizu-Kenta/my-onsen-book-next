@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Ginzan from '../public/ginzan.jpg'
+import YugataOnsen  from '../public/yugata_onsen.jpg'
 
 export default function HomePage() {
   return (
@@ -21,23 +22,28 @@ export default function HomePage() {
         </div>
         <div className='pt-3'>
           <p className="font-notojp text-xl text-gray-600 text-center leading-relaxed px-10">
-            MyOnsenBookとは自分の行った温泉を記録し、自分だけの温泉図鑑を作ることができるサービスです。<br />自分で作成した図鑑を他の人と共有し自分の温泉体験を共有し合うことも、自分がまだ知らない温泉に出会うことも可能です。
+            MyOnsenBookとは自分の行った温泉を記録し、自分だけの温泉図鑑を作ることができるサービスです。<br />自分で作成した温泉を他の人と共有することも、誰かが追加してくれた、あなたのまだ知らない温泉に出会うことも可能です。
           </p>
           <p className="font-notojp text-xl text-gray-600 text-center leading-relaxed px-10 py-5">
-            もし自分が行った温泉が登録されていなかったら、ぜひ積極的に登録してみてください。<br />あなたが登録した温泉が、誰かの温泉図鑑をより充足させるきっかけになります。
+            もしあなたが行った温泉が登録されていなかったら、ぜひ積極的に登録してみてください。<br />あなたが登録した温泉が、誰かの温泉図鑑をより充足させるきっかけになります。
           </p>
           <p className="font-notojp text-xl text-gray-600 text-center leading-relaxed px-10 py-5">
-            場所から、泉質から、宿から、自分にあった温泉を探す旅を今すぐ始めましょう。<br />※都道府県・泉質検索は近日実装予定
+            自分にあった温泉を探す旅を今すぐ始めましょう。
           </p>
         </div>
       </div>
-      <div className='my-20'>
-        <p className="font-notojp text-xl text-gray-600 text-center">Famous Onsen</p>
-        <h2 className="font-notojp text-5xl font-bold text-emerald-600 my-4 text-center">みんなに人気の温泉</h2>
+      <div className='my-10'>
+        <p className="font-notojp text-xl text-gray-600 text-center">What is Onsen</p>
+        <h2 className="font-notojp text-5xl font-bold text-emerald-600 my-4 text-center">温泉とは</h2>
       </div>
-      <div className='my-20'>
-        <p className="font-notojp text-xl text-gray-600 text-center">Latest Onsen</p>
-        <h2 className="font-notojp text-5xl font-bold text-emerald-600 my-4 text-center">最近追加された温泉</h2>
+      <div className='flex pt-3 flex-col items-center py-10'>
+        <Image src={ YugataOnsen } alt="Onsen" width={960} height={540} />
+        <p className="font-notojp text-xl text-gray-600 text-center leading-relaxed px-10 my-10">
+          日本では、温泉は「温泉法」という法律によって「地中からゆう出する温水、鉱水及び水蒸気その他のガス（炭化水素を主成分とする天然ガスを除く。）で、別表①に掲げる温度又は物質を有するもの」と定義されています。<br />したがって、地中からゆう出した時の温度が、25℃以上あれば温泉となり、また25℃未満であっても別表の物質（19項目のうちいずれかひとつ以上）が規定量含まれていれば、温泉となります。<br />また条件を満たせば水蒸気やガスも温泉となります。<br />※温泉協会HPより
+        </p>
+        <p className="font-notojp text-xl text-gray-600 text-center leading-relaxed px-10 py-5">
+        環境省によると、日本には2016年度時点で3038の温泉地（源泉数は2万7422）があります。<br />温泉はヨーロッパでは医療行為の一環として位置付けられる側面が強いそうですが、日本では観光を兼ねた娯楽である場合が多いようです。
+        </p>
       </div>
       <div className='bg-slate-200 py-2'>
         <p className="font-notojp text-sm text-black text-center">© my-onsen-book All rights reserved</p>
