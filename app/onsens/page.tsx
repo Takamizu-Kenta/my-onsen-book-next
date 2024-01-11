@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Link from 'next/link'
 import { Onsen } from '../src/types/onsen'
-import { Input } from "@nextui-org/react"
-import  { Card, CardHeader, CardBody } from "@nextui-org/react"
+import  { Card, CardHeader, CardBody, Image } from "@nextui-org/react"
 import { Button } from "@nextui-org/react"
 
 const Onsens = () => {
   const [onsens, setOnsens] = useState<Onsen[]>([])
+  const [latestOnsens, setLatestOnsens] = useState<Onsen[]>([])
 
   const fetchOnsens = async () => {
     try {
@@ -21,8 +21,18 @@ const Onsens = () => {
     }
   }
 
+  const fetchLatestOnsens = async () => {
+    try {
+      const res = await axios.get<Onsen[]>('http://localhost:3000/api/v1/onsens/latest')
+      setLatestOnsens(res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   useEffect(() => {
     fetchOnsens()
+    fetchLatestOnsens() // 追加
   }, [])
 
   return (
@@ -32,27 +42,19 @@ const Onsens = () => {
           <h1 className="font-notojp text-5xl font-bold text-emerald-600 my-4">温泉データベース</h1>
           <p className="font-notojp text-xl text-gray-600">温泉の情報を登録してみんなで共有しよう！</p>
         </div>
-        <div className='mb-5 w-96'>
-          <Input
-            classNames={{
-              base: "w-screen sm:max-w-[10rem] h-12",
-              mainWrapper: "h-full w-96",
-              input: "text-md",
-              inputWrapper: "h-full w-full font-normal text-default-500 bg-default-300/20",
-            }}
-            placeholder="温泉名を入力してください"
-            size="sm"
-            // startContent={<SearchIcon size={18} />}
-            type="search"
-          />
-        </div>
       </div>
+      <h3 className='font-notojp text-3xl font-semibold text-gray-700 my-10'>おすすめの温泉</h3>
       <div className="flex flex-col items-center">
         <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-2 line-clamp-2 justify-center">
           {onsens.slice(0, 6).map((onsen: any) => (
             <Card  key={onsen.id} className="py-4 m-2 w-96" shadow="none">
               <CardHeader className="pb-0 pt-2 px-4 flex flex-col items-start">
-                <div className="flex items-end mb-2">
+                {onsen.onsen_image ? (
+                  <Image src={onsen.onsen_image} alt='Onsen Image' width={1280} height={720} />
+                ) : (
+                  <Image src='https://placehold.jp/1280x720.png' alt='No Image' width={1280} height={720} />
+                )}
+                <div className="flex items-end mb-2 my-4">
                   <p className="text-sm font-bold">{onsen.pref}</p>
                   <p className="text-tiny font-bold ml-2 text-gray-500">{onsen.onsen_area_name}</p>
                 </div>
@@ -77,8 +79,35 @@ const Onsens = () => {
         </div>
       </div>
 
-      <div>
-        <h3 className='font-notojp text-3xl font-semibold text-gray-700 mt-10'>みんなが最近追加した温泉</h3>
+      <div className='py-10'>
+        <h3 className='font-notojp text-3xl font-semibold text-gray-700 my-10'>みんなが最近追加した温泉</h3>
+        <div className="flex flex-col items-center">
+          <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-2 line-clamp-2 justify-center">
+            {latestOnsens.slice(0, 6).map((latest_onsen: any) => (
+              <Card  key={latest_onsen.id} className="py-4 m-2 w-96" shadow="none">
+                <CardHeader className="pb-0 pt-2 px-4 flex flex-col items-start">
+                  {latest_onsen.onsen_image ? (
+                    <Image src={latest_onsen.onsen_image} alt='latest_onsen Image' width={1280} height={720} />
+                  ) : (
+                    <Image src='https://placehold.jp/1280x720.png' alt='No Image' width={1280} height={720} />
+                  )}
+                  <div className="flex items-end mb-2 my-4">
+                    <p className="text-sm font-bold">{latest_onsen.pref}</p>
+                    <p className="text-tiny font-bold ml-2 text-gray-500">{latest_onsen.onsen_area_name}</p>
+                  </div>
+                  <h4 className="font-bold text-large">{latest_onsen.onsen_name}</h4>
+                  <small className="text-default-500">{latest_onsen.quality}</small>
+                </CardHeader>
+                <CardBody className="overflow-visible py-2">
+                  <p className="text-default-500 text-sm overflow-hidden line-clamp-2">{latest_onsen.onsen_description}</p>
+                  <Link href={`/onsens/${latest_onsen.id}`}>
+                    <p className=" text-sm mt-6 text-right text-emerald-600">もっとみる→</p>
+                  </Link>
+                </CardBody>
+              </Card>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )
