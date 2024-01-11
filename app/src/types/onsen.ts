@@ -1,3 +1,5 @@
+import { Facility } from './facility'
+
 export type Onsen = {
   id: number
   facility_name: string
@@ -13,3 +15,7 @@ export type Onsen = {
   is_owner?: boolean
 }
 
+export type OnsenResponse = {
+  onsen: Onsen
+  related_facilities?: Facility[]
+}
