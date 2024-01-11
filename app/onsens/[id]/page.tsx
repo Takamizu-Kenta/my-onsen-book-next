@@ -5,14 +5,14 @@ import { useParams, useRouter } from 'next/navigation'
 import axios from 'axios'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Onsen } from '../../src/types/onsen'
+import { Onsen, OnsenResponse } from '../../src/types/onsen'
 import { Facility } from '../../src/types/facility'
 import { Button, Spinner } from "@nextui-org/react"
 import MyOnsenBookBtn from '../../components/buttons/MyOnsenBookBtn'
 
 const ShowOnsen = () => {
   const [onsen, setOnsen] = useState<Onsen | null>(null)
-  const [facilities, setFacilities] = useState<Facility[]>([])
+  const [relatedFacilities, setFacilities] = useState<Facility[] | null>([])
 
   const router = useRouter()
 
@@ -21,28 +21,18 @@ const ShowOnsen = () => {
 
   const fetchOnsen = useCallback(async () => {
     try {
-      const res = await axios.get<Onsen>(`http://localhost:3000/api/v1/onsens/${id}`, { withCredentials: true })
+      const res = await axios.get<OnsenResponse>(`http://localhost:3000/api/v1/onsens/${id}`, { withCredentials: true })
 
-      setOnsen(res.data)
+      setOnsen(res.data.onsen)
+      setFacilities(res.data.related_facilities || null)
     } catch (err) {
       console.log(err)
     }
   }, [id])
 
-  const fetchFacilities = async () => {
-    try {
-      const res = await axios.get<Facility[]>(`http://localhost:3000/api/v1/facilities`, { withCredentials: true })
-
-      setFacilities(res.data)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
   useEffect(() => {
     if (id) {
       fetchOnsen()
-      fetchFacilities()
     }
   }, [fetchOnsen, id])
 
@@ -61,9 +51,9 @@ const ShowOnsen = () => {
         <h1 className='font-notojp text-4xl font-semibold text-gray-600 mb-4 mr-5'>{onsen.onsen_name}</h1>
         <p className='font-notojp text-xl text-gray-600'>{onsen.onsen_name_kana} / {onsen.pref}</p>
         <div className='ml-auto mb-2.5 self-center'>
-          <Button className="w-40 mr-5" color="success" variant="bordered">
+          {/* <Button className="w-40 mr-5" color="success" variant="bordered">
             この温泉に行きたい！
-          </Button>
+          </Button> */}
           <MyOnsenBookBtn color="success" marked={onsen.is_owner || false}></MyOnsenBookBtn>
         </div>
       </div>
@@ -116,30 +106,42 @@ const ShowOnsen = () => {
           </tbody>
         </table>
       </div>
-      <div className='my-10'>
-        <h4 className='font-notojp text-2xl font-semibold text-gray-600 mb-10 mr-5'>
-          {onsen.onsen_name}周辺の施設
-        </h4>
-        <div>
-          {facilities.map((facility: Facility) => (
-            <div key={facility.id} className='flex items-center border-b-2 border-gray-200 ml-3 pb-5 h-56 justify-between'>
-              <div className='flex-1 w-1/3 m-2 max-h-80 max-w-sm'>
-                {facility.facility_image ? (
-                  <Image src={facility.facility_image} alt='Facility Image' width={1280} height={720} />
-                ) : (
-                  <Image src='https://placehold.jp/1280x720.png' alt='No Image' width={1280} height={720} />
-                )}
+      { relatedFacilities && (
+        <div className='my-10 w-full'>
+          <h4 className='font-notojp text-2xl font-semibold text-gray-600 mb-10 mr-5'>
+            {onsen.onsen_name}周辺の施設
+          </h4>
+          <div>
+            {relatedFacilities?.map((facility: Facility) => (
+              <div key={facility?.id} className='flex items-center border-b-2 border-gray-200 ml-3 pb-5 h-56 justify-between'>
+                <div className='flex-1 w-1/3 m-2 max-h-48 max-w-sm'>
+                  {facility?.facility_image ? (
+                    <Image src={facility.facility_image} alt='Facility Image' width={1280} height={720} />
+                  ) : (
+                    <Image src='https://placehold.jp/1280x720.png' alt='No Image' width={1280} height={720} />
+                  )}
+                </div>
+                <div className='flex flex-col flex-2 w-2/3 m-2 leading-8 h-full justify-between'>
+                  <div>
+                    <Link href={`/facilities/${facility.id}`}>
+                      <h4 className='font-notojp text-xl font-semibold text-gray-600 align-top my-3'>{facility.facility_name}</h4>
+                    </Link>
+                    <p className='font-notojp text-sm text-gray-400'>{facility.pref}{facility.address}</p>
+                    <p className='font-notojp text-base text-gray-600 mt-5'>{facility.facility_description}</p>
+                  </div>
+                  <div>
+                    <Link href={`/facilities/${facility.id}`}>
+                      <p className="text-sm mr-5 text-theme text-right justify-end">もっとみる→</p>
+                    </Link>
+                  </div>
+                </div>
               </div>
-              <div className='flex-2 w-2/3 m-2 leading-8 h-full'>
-                <h4 className='font-notojp text-xl font-semibold text-gray-600 align-top my-3'>{facility.facility_name}</h4>
-                <p className='font-notojp text-sm text-gray-400'>{facility.pref}{facility.city}</p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
       {/* TODO: ここから下は後で実装 */}
-      <div className='mt-10'>
+      {/* <div className='mt-10'>
         <h4 className='font-notojp text-2xl font-semibold text-gray-600 mb-10 mr-5'>
           {onsen.onsen_name}の口コミ
         </h4>
@@ -159,7 +161,7 @@ const ShowOnsen = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className='flex justify-center mt-10'>{/* 一覧に戻る、お気に入り */}
         <Link href="/onsens/all">
           <Button className="mt-2 w-40 mr-6 mb-7" color="success" variant="bordered">

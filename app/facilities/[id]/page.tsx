@@ -101,7 +101,7 @@ const ShowFacility = () => {
         </h4>
         <div>
           <div className='flex items-center border-b-2 border-gray-200 ml-3 pb-5 h-56 justify-between'>
-            <div className='flex-1 w-1/3 m-2 max-h-80 max-w-sm'>
+            <div className='flex-1 w-1/3 m-2 max-h-48 max-w-sm'>
               {relatedOnsen?.onsen_image ? (
                 <Image src={relatedOnsen.onsen_image} alt='Onsen Image' width={1280} height={720} />
               ) : (
@@ -124,7 +124,7 @@ const ShowFacility = () => {
         </div>
       </div>
       {/* TODO: ここから下は後で実装 */}
-      <div className='mt-10'>
+      {/* <div className='mt-10'>
         <h4 className='font-notojp text-2xl font-semibold text-gray-600 mb-10 mr-5'>
           {facility.facility_name}の口コミ
         </h4>
@@ -142,10 +142,9 @@ const ShowFacility = () => {
                 良いお風呂でした。また行きたいです。
               </p>
             </div>
-
           </div>
         </div>
-      </div>
+      </div> */}
       <div className='flex justify-center mt-10'>{/* 一覧に戻る、お気に入り */}
         <Link href="/facilities">
           <Button className="mt-2 w-40 mr-6 mb-7" color="success" variant="bordered">
